@@ -1,35 +1,34 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Person from './Person/Person';
 import './App.css';
 
-class App extends Component{
-  state = {
+const App = props =>{
+  const [personState, setPersonsState] = useState ({
     persons: [
       {name:'Liza', age: 17},
       {name: 'George', age: 45}
     ]
-  }
+  });
 
-  changeNameHandler = () =>{
+
+  const changeNameHandler = () =>{ // a functions definition within a function definition
     // DON'T DO THIS this.state.persons[0].name = 'Ann';
-    this.setState( {
+    setPersonsState( {
       persons: [
         {name:'Ann', age: 17},
         {name: 'George', age: 45}
       ]
-    } )
+    });
   }
 
-  render() {
-    return(
-      <div>
-        <Person name = {this.state.persons[0].name} age = {this.state.persons[0].age}> playing the flute </Person>
-        <Person name = {this.state.persons[1].name} age = {this.state.persons[1].age}> learning Illustrator </Person>
-        <button onClick={this.changeNameHandler}>Change Name</button>
-      </div>
-    );
-  }
-}
+  return(
+    <div>
+      <Person name = {personState.persons[0].name} age = {personState.persons[0].age}> playing the flute </Person>
+      <Person name = {personState.persons[1].name} age = {personState.persons[1].age}> learning Illustrator </Person>
+      <button onClick={changeNameHandler}>Change Name</button>
+    </div>
+  ); 
+};
 
 
 // function App() {

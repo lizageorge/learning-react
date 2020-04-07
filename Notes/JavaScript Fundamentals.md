@@ -1,5 +1,5 @@
 # JavaScript Fundamentals
-> July 5th, 2019 + APril 5, 2020
+> July 5th, 2019 + April 5, 2020
 > Pluralsight course, JavaScript Fundamentals, by Mark Zamoyta
 
 ## Basic JS Features
@@ -191,13 +191,13 @@ typeOf(NaN); //numbber
 
 
 ## Function and Scope
-Functions Scope
-Variables in a function block stay in the function block. Nested functions are in the parent function’s scope (they can use and overide parent function variables), but variables in them are restricted to the nested function scope
-Block Scope 
-Part of the ECMA Standard 2015 version, or ES6
-Block = code block = inside one set of {}
-Just like with functions, other code blocks like loops and conditionals have scopes
-Doesn’t apply to the var keyword - so just stick to let
+- **Functions Scope** 
+    -Variables in a function block stay in the function block. Nested functions are in the parent function’s scope (they can use and overide parent function variables), but variables in them are restricted to the nested function scope
+- **Block Scope**
+    - Part of the ECMA Standard 2015 version, or ES6
+    - Block = code block = inside one set of {}
+    - Just like with functions, other code blocks like loops and conditionals have scopes
+    - Doesn’t apply to the var keyword - so just stick to let
  → Equal, Outside
 The only difference bween function and block scope only exists when using var instead of let
 

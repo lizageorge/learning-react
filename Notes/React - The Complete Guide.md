@@ -6,7 +6,7 @@
 ## The Basics
 - React is a Javascript library used to make the creation and maintanance of UIs easier. JS applications, because they run entirely on the browser, are fast.
 - alternatives incl. Angular and Vue
-- It's structured to use on components that can include repeatable HTML code
+- It's structured to be a *heirarchy of components*, which can be function-based or class-based and can include repeatable HTML code. As per a single-page application, one component will have the primary to render the final html.  
 
 - there are two kinds of applications
     - *single-page application* = there is only one HTML page, all content is (re)rendered as components, keeping all function calls in one variable (app, root, etc.) and have a sinle ReactDOM.render() calling that var
@@ -63,40 +63,73 @@
                     <p> I'm {props.name} and I am {props.age} years old. My hobbies include {props.children}!</p>
                 );
                 ```
-        - to dynamically change a page according to component data, you need to use the `state` property in the final App class. 
+        - to dynamically change a page according to component data, you need to use the `state` property in the final App class. State is a way to actvely update selective parts of a page because re-rendering a component (or parts of a component) is triggered when the methods meant to update that state are called
             - This is only possible on **class-based components** (as opposed to **function-based components**, which is what we've been using so far), which requires the extension of Component and the importing of Component too. 
-            - Set the contents of the `state` property to something to be changed, and use `this.state` in your render method to access that; if anything in state is changed, it will *automatically tell React to update the DOM re-render the page*
-            - We're using a button to change the contents; there's a specific list of events with corresponding methods to use. Create a method to specify what happens on the event (the naming convention here is to end the method name in "Handler"), in which you should use `setState()` to overside a property of state. Do not try and directly access and change a specific value, because it could mess with other properties. 
-            ```javascript
-            class App extends Component{
-                state = {
-                    persons: [
-                    {name:'Liza', age: 17},
-                    {name: 'George', age: 45}
-                    ]
-                }
-
-                changeNameHandler = () =>{
-                    // DON'T DO THIS this.state.persons[0].name = 'Ann';
-                    this.setState( {
-                    persons: [
-                        {name:'Ann', age: 17},
+                - Set the contents of the `state` property to something to be changed, and use `this.state` in your render method to access that; if anything in state is changed, it will *automatically tell React to update the DOM re-render the page*
+                - We're using a button to change the contents; there's a specific list of events with corresponding methods to use. Create a method to specify what happens on the event (the naming convention here is to end the method name in "Handler"), in which you should use `setState()` to overside a property of state. Do not try and directly access and change a specific value, because it could mess with other properties. 
+                ```javascript
+                class App extends Component{
+                    state = {
+                        persons: [
+                        {name:'Liza', age: 17},
                         {name: 'George', age: 45}
-                    ]
-                    } )
-                }
+                        ]
+                    }
 
-                render() {
-                    return(
-                    <div>
-                        <Person name = {this.state.persons[0].name} age = {this.state.persons[0].age}> playing the flute </Person>
-                        <Person name = {this.state.persons[1].name} age = {this.state.persons[1].age}> learning Illustrator </Person>
-                        <button onClick={this.changeNameHandler}>Change Name</button>
-                    </div>
-                    );
-                }
-                }
-            ``` 
+                    changeNameHandler = () =>{
+                        // DON'T DO THIS this.state.persons[0].name = 'Ann';
+                        this.setState( {
+                        persons: [
+                            {name:'Ann', age: 17},
+                            {name: 'George', age: 45}
+                        ]
+                        } )
+                    }
+
+                    render() {
+                        return(
+                        <div>
+                            <Person name = {this.state.persons[0].name} age = {this.state.persons[0].age}> playing the flute </Person>
+                            <Person name = {this.state.persons[1].name} age = {this.state.persons[1].age}> learning Illustrator </Person>
+                            <button onClick={this.changeNameHandler}>Change Name</button>
+                        </div>
+                        );
+                    }
+                    }
+                ``` 
                 - now, the page will smoothly change the displayed name from Liza to Ann once the button is clicked without having to reload the whole page~!
+            - To use state on function-based components, you will have to use **react hooks**, a feature available from React 16.8
+                - react functions that allow you to add functionality to function-based components
+                - import the hook useState from react and use it in your main component. useState will always return an array of two elements, first is the current state expressed as an object and the second is a funciton to update (replace!) that state with. The best way to use useState is to call it multiple times to update the state alongside the replacing method it comes with.
+                    ```javascript
+                    const App = props =>{
+                        const [personState, setPersonsState] = useState ({
+                            persons: [
+                            {name:'Liza', age: 17},
+                            {name: 'George', age: 45}
+                            ]
+                        });
 
+
+                        const changeNameHandler = () =>{ // a functions definition within a function definition
+                            // DON'T DO THIS this.state.persons[0].name = 'Ann';
+                            setPersonsState( 
+                                {
+                                persons: [
+                                    {name:'Ann', age: 17},
+                                    {name: 'George', age: 45}
+                                ]
+                                }
+                            );
+                        }
+
+                        return(
+                            <div>
+                            <Person name = {personState.persons[0].name} age = {personState.persons[0].age}> playing the flute </Person>
+                            <Person name = {personState.persons[1].name} age = {personState.persons[1].age}> learning Illustrator </Person>
+                            <button onClick={changeNameHandler}>Change Name</button>
+                            </div>
+                        ); 
+                    };
+                    ```
 
