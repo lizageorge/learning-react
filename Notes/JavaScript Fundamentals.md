@@ -4,6 +4,8 @@
 
 ## Basic JS Features
 
+- many of these features are Next-Gen JS features, so be sure to compile with a transpiler like Babel with presets 
+
 ### Variable Declarations
 - **Constants** = use `const` = Like a variable, but the value will never change. Cannot be changed. They’re more to avoid programmer errors. It must be initialized, or it’ll give an error
 
@@ -12,7 +14,7 @@
     - Just use the let keyword. It’s simpler and newer. It’s like using === instead of ==.
 
 
-
+### Rest and Spread Paramters
 - **Rest Parameter**  
     - Using this allows you to define a function that can accept an argument as an array of multiple arrays multiple values
     ``` javascript
@@ -82,73 +84,110 @@
     - You might have some trouble initializing the destructuring vars later on b JS will assume you’re making a code block cause it uses {}. So put the line (except the semicolon) in ().
 
 
+### Misc.
 
+- **typeof()** = a func where if you pass a value, you can get the type. Watch out for null, which gives an object, and NaN(not a number) which gives a number. 
+``` javascript
+typeOf({}) //object
+typeOf(null) //object
+typeOf(undefined) //undefined
+typeOf(NaN); //numbber
+```
+- **Common Type Conversions** = Different methods to convert. Watch out; there aren’t types called int and float, but you can convert numbers or strings into ‘int’s or ‘float’s. Very similar to Java
+    - If there are non number characters in the string you pass into parseInt or parseFloat, JS’ll just ignore them
+    - If your string begins with a non-number character, JS’ll just give ‘NaN’
+    ```javascript
+    foo.toString(); //converts to string
+    Number.parseInt("55"); //converts string to int
+    Numberr.parseFloat("55.99"); //converts string to float
+    ```
 
-
-typeof() 
-Pass a value to get the type. Watch out for null, which gives an object, and NaN(not a number) which gives a number. 
-
-
-Common Type Conversions 
-Different methods to convert. Watch out; there aren’t types called int and float, but you can convert numbers or strings into ‘int’s or ‘float’s. 
-If there are non number characters in the string you pass into parseInt or parseFloat, JS’ll just ignore them
-If your string begins with a non-number character, JS’ll just give ‘NaN’
-
-
-Controlling Loops 
-Here, you can initialize the variable outside the function parameter as long as you leave the semicolon
-‘Break’ can skip the remainder of a loop.
-
-‘Continue’ can skip the iteration of the loop you’re in and move on to the rest of the iterations ([]thing abt printing out 1-100 bt skipping 50). Here, this skipped 2.
-
-The break and continue keywords will work with while loops too
+- **Ways to control Loops**
+    - you can initialize the variable outside the function parameter as long as you leave the semicolon
+    - `break` can skip the remainder of a loop.
+        ```javascript
+        let i = 0;
+        for(; i <12; i++)){
+            if(i == 8){
+                break;
+            }
+        }
+        console.log(i) // 8
+        ```
+    - ‘Continue’ can skip the iteration of the loop you’re in and move on to the rest of the iterations ([]thing abt printing out 1-100 bt skipping 50). Here, this skipped 2.
+        ```javascript
+        for(let i = 0; i <4; i++)){
+            if(i == 2){
+                continue;
+            }
+            console.log(i)
+        }
+        // 0 1 3 4
+        ```
+    - The break and continue keywords will work with while loops too
 
 ## Operators
-Equality Operators ===/!==
-To compare two values if they’re equal or unequal
-=== and !== require the two values 
-Unary Operators ++ --
-Increment by one unit 
-i++, i--, ++i, --i
-If you’re re-assinging a variable, be sure to have the operator before the value [ (val = ++val) not (val = val++)]
-Single ‘-’ will make a value negative
-If you increment a variable, it’ll convert to a number if there are number characters of give NaN if non-number characters
+- **Equality Operators ===/!== **
+     - To compare two values if they’re equal or unequal
+        - `===` and `!==` require the two values 
+- **Unary Operators ++ --**
+    - Increment by one unit 
+        - `i++`, `i--` vs `++i`, `--i` ; If you’re re-assinging a variable, be sure to have the operator before the value [ (val = ++val) not (val = val++)]
+        - Single ‘-’ will make a value negative
+        - If you increment a variable, it’ll convert to a number if there are number characters of give NaN if non-number characters
 
-Logical (Boolean) Operators && / || / !
-&&  = and
-|| = or
-If you use && and the first expression is false, it won’t even evaluate the second expression
-If you use || and the first expression is true, it won’t even evaluate the second expression
-Be careful about precedence - && has precedence over ||
+- **Logical (Boolean) Operators && / || / !**
+    - `&&`  = and
+    - `||` = or
+    - `!` = switches the following bool value
+    - If you use && and the first expression is false, it won’t even evaluate the second expression. If you use || and the first expression is true, it won’t even evaluate the second expression
+    - Be careful about precedence - && has precedence over ||
+    - You can use these operators to assign to variables. 
+        ```javascript
+        let foo =  true;
+        let bar = false;
+        let someBool = foo && bar;
+        console.log(someBool); // false
+        ```
+        - And if you use values other than just true or false…the value’s expression will be whichever value *made* it true or false (the equivalent process to above, but using truthy/falsey)
+            ```javascript
+            let a = 11;
+            let b = 12;
 
+            let first = a || b;  // 11 made this value true FIRST, so that's what first was assigned to
+            console.log(first) // 11
 
-You can use these operators to assign to variables
+            let first = a && b;  // 12 was REQUIRED to make this value true, so that's what first was assigned to
+            console.log(first) // 12
+        ```
 
-And if you use ‘![variable/value]’, it’ll convert the value into a boolean value based on whether its a truthy or falsey, and switch it to the opposite
---> false
+- **Relational Operators <, <=, >, >=**
+    - Comparing numerical values are straight-forward
+    - Comparing strings will compare the first character based on aski values. (Uppercase letter > lower case letters) > (a>z)
+        - You can use string.toLowerCase or .toUpperCase to work around thi
 
-And if you use values other than just true or false…the value’s expression will be whichever value made it true or false (zoom in lol)
+- **Conditional Operator ?** 
+    - in place of an if/else statement
+    ```javascript
+    var result = (foo < 5) ? true: false;
+    ```
+    - This is equivalent to saying ‘If foo>5, console.log(true), else console.log(false)’
+    - Parentheses are optional 
 
-	→ {name: Joe}
+- **Assignment Operators +=, -=**
+    ```javascript
+    var1 += 10;
+    var1 -= 10;
+    var1 *= 10;
+    var1 /= 10;
+    var1 <<= 10;
+    var1 >>= 10;
+    var1 >>>= 10;
+	```
+    - Those last operators are bit-type operators ... naaah you don’t need to know that rn lmao
 
-Relational Operators <, <=, >, >=
-Comparing numerical values are starigh-tforward
-Comparing strings will compare the first character based on aski values. (Uppercase letter > lower case letters) > (a>z)
-You can use string.toLowerCase or .toUpperCase to work around thi
-
-Conditional Operator - in place of an if/else statement
-
-
-This is equivalent to saying ‘If foo>5, console.log(true), else console.log(false)’
-Parentheses optional 
-
-Assignment Operators +=, -=
-
-	
-Those last operators are bit-type operators - naaah you don’t need to know that rn lmao
-
-Operator Precedence
-You can check this in developer.mozilla.org for the full precedence table
+- **Operator Precedence**
+    - You can check this in developer.mozilla.org for the full precedence table
 
 
 ## Function and Scope
@@ -266,7 +305,9 @@ every
 Will go through every item in the array (for loop) and check if every object’s specified key-value exists, and return true. If even one object has a falsey in that value, this function will return false. 
 
 Find
-Will go through every item in the array (for loop) and check a conditional against every object’s specified key-value. The first object that returns true will be stored in a variable (parameter) and the loop will break
+Will go through every item in the array (for loop) and check a conditional against every object’s specified key-value. The *first object* that returns true will be stored in a variable (parameter) and the loop will break. Similarily, findINdex will find the index of the specified element
+
+Map
 
 More on mozilla development network
 
