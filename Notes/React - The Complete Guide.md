@@ -47,8 +47,7 @@
         ```
         - use uppercase for file names and folders, but use lowercase for creating classes. the lowercases are reserved for JSX "html-ish" syntax
     - there are two ways to change the content of a page dynamically and selectively; change a prop inputted to a component, or change the state of a component. This way, React can watch the Vitrual DOM - that you can make specific changes to - find the specific area that changes, and rerenders just that bit of the DOM.
-        - to output *dynamic content* from the component, use `{}` within the "html" content space to distinguish your code statement from text. 
-            - use `props` to receive parameters passed as the html-ish configs and `props.children` to access content between the tags (which can be more html-ish).
+        - to output *dynamic content* from the component, use `{}` within the "html" content space to distinguish your code statement from text.  use **props** to receive parameters passed as the html-ish configs and `props.children` to access content between the tags (which can be more html-ish). You can also pass in functions if you want.
                 - to achieve the equivalent of outputting "I am Liza and I am 17,..." with this...
                 ```javascript
                 <div>
@@ -98,9 +97,29 @@
                     }
                 ``` 
                 - now, the page will smoothly change the displayed name from Liza to Ann once the button is clicked without having to reload the whole page~!
+                - if you want to *pass in parameters to the functions called inside a component, incl when you're passing as props*, you either use the bind() method or an arrow function
+                    - using `.bind()`, you have to pass in the `this` keyword in front of whatever parameters you're including
+                    ```javascript
+                    changeNameHandler = (newName) =>{ //the modified function now accepts a parameter
+                        this.setState( {
+                        persons: [
+                            {name: newName, age: 17},
+                            {name: 'George', age: 45}
+                        ]
+                        } )
+                    }
+                    /// ... inside the render function...
+                    <button onClick={this.changeNameHandler.bind(this, 'Ann (from button)')}>Change Name</button>
+                    ```
+                    - using an arrow function, you're basically returning the function call, which is why this is the only time you'll see the `()` insice the component
+                    ```javascript
+                    <button onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
+                    ```
+
+
             - To use state on function-based components, you will have to use **react hooks**, a feature available from React 16.8
-                - react functions that allow you to add functionality to function-based components
-                - import the hook useState from react and use it in your main component. useState will always return an array of two elements, first is the current state expressed as an object and the second is a funciton to update (replace!) that state with. The best way to use useState is to call it multiple times to update the state alongside the replacing method it comes with.
+                - = react functions that allow you to add functionality to function-based components
+                - import the hook `useState()` from react and use it in your main component. useState() will always return an array of two elements, first is the current state expressed as an object and the second is a funciton to update (replace!) that state . The best way to use useState() is to call it multiple times to update the state alongside the replacing method it comes with.
                     ```javascript
                     const App = props =>{
                         const [personState, setPersonsState] = useState ({
@@ -132,4 +151,6 @@
                         ); 
                     };
                     ```
+
+            - whether you use func or class-based components, a component can be **statefull** (aka container/smart components) or **stateless** (or presentational/dumb components) depending on whether or not it uses state. It's best practice to use as few statefull components and more statefull components as possible.
 
