@@ -21,6 +21,15 @@ class App extends Component{
     } )
   }
 
+  nameChangedHandler = (event) =>{
+    this.setState( {
+      persons: [
+        {name: 'Liza', age: 17},
+        {name: event.target.value, age: 45}
+      ]
+    } )
+  }
+
   render(){
     return (
       <div>
@@ -33,10 +42,11 @@ class App extends Component{
           </Person>
         <Person 
           name = {this.state.persons[1].name} 
-          age = {this.state.persons[1].age}> 
+          age = {this.state.persons[1].age}
+          changed={this.nameChangedHandler}> 
           learning Illustrator 
         </Person>
-        <button onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
+        <button className = "btn btn-success mt-4" onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
       </div>
     ); 
   }

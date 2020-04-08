@@ -66,36 +66,64 @@
             - This is only possible on **class-based components** (as opposed to **function-based components**, which is what we've been using so far), which requires the extension of Component and the importing of Component too. 
                 - Set the contents of the `state` property to something to be changed, and use `this.state` in your render method to access that; if anything in state is changed, it will *automatically tell React to update the DOM re-render the page*
                 - We're using a button to change the contents; there's a specific list of events with corresponding methods to use. Create a method to specify what happens on the event (the naming convention here is to end the method name in "Handler"), in which you should use `setState()` to overside a property of state. Do not try and directly access and change a specific value, because it could mess with other properties. 
-                ```javascript
-                class App extends Component{
-                    state = {
-                        persons: [
-                        {name:'Liza', age: 17},
-                        {name: 'George', age: 45}
-                        ]
-                    }
-
-                    changeNameHandler = () =>{
-                        // DON'T DO THIS this.state.persons[0].name = 'Ann';
-                        this.setState( {
-                        persons: [
-                            {name:'Ann', age: 17},
+                    ```javascript
+                    class App extends Component{
+                        state = {
+                            persons: [
+                            {name:'Liza', age: 17},
                             {name: 'George', age: 45}
-                        ]
-                        } )
-                    }
+                            ]
+                        }
 
-                    render() {
-                        return(
+                        changeNameHandler = () =>{
+                            // DON'T DO THIS this.state.persons[0].name = 'Ann';
+                            this.setState( {
+                            persons: [
+                                {name:'Ann', age: 17},
+                                {name: 'George', age: 45}
+                            ]
+                            } )
+                        }
+
+                        render() {
+                            return(
+                            <div>
+                                <Person name = {this.state.persons[0].name} age = {this.state.persons[0].age}> playing the flute </Person>
+                                <Person name = {this.state.persons[1].name} age = {this.state.persons[1].age}> learning Illustrator </Person>
+                                <button onClick={this.changeNameHandler}>Change Name</button>
+                            </div>
+                            );
+                        }
+                        }
+                    ``` 
+                - here we're setting it up to accept input, listen for an event, and change with that event to display the inputted text. The handler method is accepting an `event` object.
+                ```javascript
+                //inside Person.js
+                const person =  (props) => {
+                    return (
                         <div>
-                            <Person name = {this.state.persons[0].name} age = {this.state.persons[0].age}> playing the flute </Person>
-                            <Person name = {this.state.persons[1].name} age = {this.state.persons[1].age}> learning Illustrator </Person>
-                            <button onClick={this.changeNameHandler}>Change Name</button>
+                            <p onClick = {props.click}> I'm {props.name} and I am {props.age} years old. My hobbies include {props.children}!</p>
+                            <input className="form-control" type="text" onChange={props.changed} value={props.name}></input>
                         </div>
-                        );
-                    }
-                    }
-                ``` 
+                    )
+                };
+                //inside App.js
+                nameChangedHandler = (event) =>{
+                    this.setState( {
+                    persons: [
+                        {name: 'Liza', age: 17},
+                        {name: event.target.value, age: 45}
+                    ]
+                    } )
+                }
+                /// ...
+                <Person 
+                    name = {this.state.persons[1].name} 
+                    age = {this.state.persons[1].age}
+                    changed={this.nameChangedHandler}> 
+                    learning Illustrator 
+                </Person>
+                ```
                 - now, the page will smoothly change the displayed name from Liza to Ann once the button is clicked without having to reload the whole page~!
                 - if you want to *pass in parameters to the functions called inside a component, incl when you're passing as props*, you either use the bind() method or an arrow function
                     - using `.bind()`, you have to pass in the `this` keyword in front of whatever parameters you're including
@@ -111,7 +139,7 @@
                     /// ... inside the render function...
                     <button onClick={this.changeNameHandler.bind(this, 'Ann (from button)')}>Change Name</button>
                     ```
-                    - using an arrow function, you're basically returning the function call, which is why this is the only time you'll see the `()` insice the component
+                    - using an arrow function, you're basically returning the function call, which is why this is the only time you'll see the `()` inside the component (also a bit inneficient)
                     ```javascript
                     <button onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
                     ```
