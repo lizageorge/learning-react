@@ -198,13 +198,21 @@ typeOf(NaN); //numbber
     - Block = code block = inside one set of {}
     - Just like with functions, other code blocks like loops and conditionals have scopes
     - Doesn’t apply to the var keyword - so just stick to let
- → Equal, Outside
-The only difference bween function and block scope only exists when using var instead of let
+    ```javascript
+    let message = 'Outside';
+    if (true){
+        let message = 'Equal';
+        console.log(message);
+    }
+    console.log(message);
+    ```
+    - → Equal, Outside
+- The only difference bween function and block scope only exists when using var instead of let
 
-IIFE’s 
-Immediately Invoked Function Expression
-Function Expression = using it
-Immediately invoked = it’ll happen the moment it’s defined
+- **IIFE’s** 
+    - = Immediately Invoked Function Expression
+        - Function Expression = using it
+        - Immediately invoked = it’ll happen the moment it’s defined
 The function is defined, made into a statement by putting it in (), and invoked at the same time
 Assign the IIFE to a variable and you call the function by using the variable name. You never name the function. A standard variable name to assign an IIFE is ‘app’. But only the function’s return value will be returned to the variable!
  

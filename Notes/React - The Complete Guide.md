@@ -1,5 +1,5 @@
 # The Bootstrap 4 Bootcamp
-> April 4, 6 2020
+> April 4 - 8 2020
 > using "React - The complete guide", by Maximilian Schwarzmuller on Udemy
 
 
@@ -124,6 +124,9 @@
                     learning Illustrator 
                 </Person>
                 ```
+
+                - *More on events*
+                    -  the JS `.addEventListener()` method takes two objects; a string called type, and an EventListener object of type listener. Every html element has an EventListener, which is just an object that keeps track of all info related to possible events (mouse position, hover status, click status, etc.). When you call the method, you will include a function (can be an arrow func) into the second parameter specifying what should happen on an event. You would repeat this once for each element used for interaction. 
                 - now, the page will smoothly change the displayed name from Liza to Ann once the button is clicked without having to reload the whole page~!
                 - if you want to *pass in parameters to the functions called inside a component, incl when you're passing as props*, you either use the bind() method or an arrow function
                     - using `.bind()`, you have to pass in the `this` keyword in front of whatever parameters you're including
