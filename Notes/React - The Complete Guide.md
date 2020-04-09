@@ -13,39 +13,41 @@
         - faster, more popular
     -*multi-page application* = multiple HTML pages, content is rerendered on the server, not all content is in React components and there is a ReactDOM.render() per widget
 
-- Setting up a React project
-     - you can use NPM or yarn to use create-react-app and download all the necessary files and organizes the package.json and the public and src folders
-     - you will work out of the src folder, where you can see that the index.js file automatically has a single ReactDOM.render() call, and App.js is your main file to work out of
-     - the App.js file *must have a function/class named App with a return()/render(); method. The content will be put into that render method*.
-     - The content within the return()/render() method is written is **JSX**, which is a way to write "html" into a .js file. That "html" will be compiled  into `React.createElement({element}, {configurations}, {content})` calls
-        - while the "html" is very similar syntactically to actual html, there are a few differences; for example, `class` is replaced with `className`. Also, you can't return more than one top-level elements, so you must wrap everything into one div element. (imagine the equivalent two React.createElement calls instead of one with two children).
-        - the following are equivalent:
-        ``` javascript
-        return (
-            <div className="App">
-            <h1>Hello There!</h1>
-            </div>
-        );
-        ```
-        ``` javascript
-        return (
-            React.createElement('div', {className:'App'}, React.createElement('h1', null, 'Hello there!'))
-        );
-        ```
-- Using Components
-    - to *create a component*, create a function that returns the JSX code you're repeating in a new file.
-        ```javascript
-        import React from 'react';
+### Setting up a React project
+- you can use NPM or yarn to use create-react-app and download all the necessary files and organizes the package.json and the public and src folders
+- you will work out of the src folder, where you can see that the index.js file automatically has a single ReactDOM.render() call, and App.js is your main file to work out of
+- the App.js file *must have a function/class named App with a return()/render(); method. The content will be put into that render method*.
+- The content within the return()/render() method is written is **JSX**, which is a way to write "html" into a .js file. That "html" will be compiled  into `React.createElement({element}, {configurations}, {content})` calls
+    - while the "html" is very similar syntactically to actual html, there are a few differences; for example, `class` is replaced with `className`. Also, you can't return more than one top-level elements, so you must wrap everything into one div element. (imagine the equivalent two React.createElement calls instead of one with two children).
+    - the following are equivalent:
+    ``` javascript
+    return (
+        <div className="App">
+        <h1>Hello There!</h1>
+        </div>
+    );
+    ```
+    ``` javascript
+    return (
+        React.createElement('div', {className:'App'}, React.createElement('h1', null, 'Hello there!'))
+    );
+    ```
+### Using Components
+- to *create a component*, create a function that returns the JSX code you're repeating in a new file.
+    ```javascript
+    import React from 'react';
 
-        const person =  () => {
-            return(
-                <p> 'I\'m a person~' </p>
-            );
-        }
+    const person =  () => {
+        return(
+            <p> 'I\'m a person~' </p>
+        );
+    }
 
-        export default person; 
-        ```
-        - use uppercase for file names and folders, but use lowercase for creating classes. the lowercases are reserved for JSX "html-ish" syntax
+    export default person; 
+    ```
+    - use uppercase for file names and folders, but use lowercase for creating classes. the lowercases are reserved for JSX "html-ish" syntax
+
+### Making an ineractive/dynamic page
     - there are two ways to change the content of a page dynamically and selectively; change a prop inputted to a component, or change the state of a component. This way, React can watch the Vitrual DOM - that you can make specific changes to - find the specific area that changes, and rerenders just that bit of the DOM.
         - to output *dynamic content* from the component, use `{}` within the "html" content space to distinguish your code statement from text.  use **props** to receive parameters passed as the html-ish configs and `props.children` to access content between the tags (which can be more html-ish). You can also pass in functions if you want.
                 - to achieve the equivalent of outputting "I am Liza and I am 17,..." with this...
@@ -65,8 +67,9 @@
         - to dynamically change a page according to component data, you need to use the `state` property in the final App class. State is a way to actvely update selective parts of a page because re-rendering a component (or parts of a component) is triggered when the methods meant to update that state are called
             - This is only possible on **class-based components** (as opposed to **function-based components**, which is what we've been using so far), which requires the extension of Component and the importing of Component too. 
                 - Set the contents of the `state` property to something to be changed, and use `this.state` in your render method to access that; if anything in state is changed, it will *automatically tell React to update the DOM re-render the page*
-                - We're using a button to change the contents; there's a specific list of events with corresponding methods to use. Create a method to specify what happens on the event (the naming convention here is to end the method name in "Handler"), in which you should use `setState()` to overside a property of state. Do not try and directly access and change a specific value, because it could mess with other properties. 
+                - We're using a button to change the contents; there's a specific list of events with corresponding methods to use. Create a method to specify what happens on the event (the naming convention here is to end the method name in "Handler"), in which you should use `setState()` to overside a property of state. Do not try and directly access and change a specific value, because it could mess with other properties. We're also using two-way binding here, connecting the input inserted on the page to the actual value in the code, by setting `value = {props.name}` in the Person definition. This allows the input field to display he right value right when the program is opened.
                     ```javascript
+                    //App.JS
                     class App extends Component{
                         state = {
                             persons: [
@@ -94,7 +97,16 @@
                             </div>
                             );
                         }
-                        }
+                    }
+                    //Person.js
+                    const person =  (props) => {
+                        return (
+                            <div>
+                                <p onClick = {props.click}> I'm {props.name} and I am {props.age} years old. My hobbies include {props.children}!</p>
+                                <input className="form-control" type="text" onChange={props.changed} value={props.name}></input>
+                            </div>
+                        )
+                    };
                     ``` 
                 - here we're setting it up to accept input, listen for an event, and change with that event to display the inputted text. The handler method is accepting an `event` object.
                 ```javascript
@@ -185,3 +197,20 @@
 
             - whether you use func or class-based components, a component can be **statefull** (aka container/smart components) or **stateless** (or presentational/dumb components) depending on whether or not it uses state. It's best practice to use as few statefull components and more statefull components as possible.
 
+### Styling
+- Anytime you make a new stylesheet you must link it to the corresponding JS file by importing it at the top. Webpack will automatically insert your code to the public html file in the most efficient way possible. In this workflow, you make a lot of small CSS stylesheets. This will apply globally
+- Alternatively, you could use **in-line styling**, where you include a variable with styling properties inside the JS render method, and link it to the corresponding html element in return's parameter. This method is best for when you want a style to be isolated to a small component.
+    ```javascript
+    render(){
+        const buttonStyle = {
+        backgroundColor: 'white',
+        color: 'black'
+        }
+        return (
+        <div>
+            ///...
+            <button style = {buttonStyle} className = "btn btn-success mt-4" onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
+        </div>
+        ); 
+    }
+    ```

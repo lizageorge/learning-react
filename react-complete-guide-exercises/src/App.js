@@ -31,6 +31,12 @@ class App extends Component{
   }
 
   render(){
+
+    const buttonStyle = {
+      backgroundColor: 'white',
+      color: 'black'
+    }
+
     return (
       <div>
         <Person 
@@ -46,7 +52,7 @@ class App extends Component{
           changed={this.nameChangedHandler}> 
           learning Illustrator 
         </Person>
-        <button className = "btn btn-success mt-4" onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
+        <button style = {buttonStyle} className = "btn btn-success mt-4" onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
       </div>
     ); 
   }
