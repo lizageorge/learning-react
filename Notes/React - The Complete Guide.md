@@ -45,7 +45,9 @@
 
     export default person; 
     ```
-    - use uppercase for file names and folders, but use lowercase for creating classes. the lowercases are reserved for JSX "html-ish" syntax
+    - use uppercase for file names and folders, but use lowercase for creating classes. the lowercases are reserved for JSX
+- *A Bit about JSX*
+    - **JSX** is a way to insert HTML markdown straight into a JS file, and is recommended by React. You can insert any JS *statements* into JSX HTML by surrrounding it in curly braces. You can make your JSX code multi-lined for readibility, so it looks like HTML, just be sure to put that in parentheses to avoid automaic semicoon insertion. JSX is also able to avoid injection attacks by escaping certain symbols like angle brackets. 
 
 ### Making an ineractive/dynamic page
     - there are two ways to change the content of a page dynamically and selectively; change a prop inputted to a component, or change the state of a component. This way, React can watch the Vitrual DOM - that you can make specific changes to - find the specific area that changes, and rerenders just that bit of the DOM.
@@ -214,3 +216,50 @@
         ); 
     }
     ```
+
+### Rendering Content Conditionally
+- Within your return/render method itself, you can include ternary operators within curly braces
+    - here, we check for the state property showPersons; if it's true, the JSX for rendering the Persons elements will pass, if not then nothing ('`null`') will happen. The togglePersonsHandler method will make sure the state switches correctly
+    ``` javascript
+    render(
+        return(
+            <buton
+            onClick = (this.togglePersonsHandler})>
+            /// ...
+            {
+                this.state.showPersons ? /// (aka this.state.showPersons === true ?)
+                <div>
+                    ///<Person/>...
+                </div> : null
+            }
+        )   
+    );
+    ```
+- alternatively, you can include a variable definition and if statement outside the return method but inside the render mehod. Because render() will be called everytime React checks to see if the content needs to be updated.
+    ```javascript
+    render(
+        let persons = null;
+        if (this.state.showPersons){
+            persons = (
+                // <Person/> ...
+            )
+        }
+        return{(
+            <div>
+                ///...
+                {persons}
+            </div>
+        )}
+    )
+
+### Working with Lists
+- you can use regular JS list features and funcs in your render method, as long as it's all contained within curly braces
+    - here, the `map()` func taken in an array as an implicit parameter and a func to use on the elements of that array as an explicit parameter. If you want access to the index of an elelment in the arrow func, you can add index as a second explicit parameter.It will map every element in the first array to a "new array".
+    ```javascript
+    <div>
+        { this.state.persons.map( (p) => <Person name = {p.name} age = {p.age}></Person>)}
+    </div>
+    ```
+- every element JS works with has a `key` property. By assigning something unique to certain elements, you can make sure that React only renders things that have changed and need to be rerendered. 
+    ```javascript
+    

@@ -53,3 +53,11 @@ class App extends Component {
 }
 
 export default App;
+
+
+/*
+Excerice Results
+- I didn' put the components into seperate folders, which is best practice
+- I accidentally forgot to created two paras in one UserOutput element
+- I chose to use Bootstrap for styling instead of using a style property and inline styles or a custom stylesheet
+*/

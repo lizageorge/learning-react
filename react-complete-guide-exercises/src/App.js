@@ -5,9 +5,10 @@ import './App.css';
 class App extends Component{
   state  = {
     persons: [
-      {name:'Liza', age: 17},
-      {name: 'George', age: 45}
-    ]
+      {name:'Liza', age: 17, id: 'key1'},
+      {name: 'George', age: 45, id: 'key2'}
+    ],
+    showPersons:false
   }
 
 
@@ -21,38 +22,50 @@ class App extends Component{
     } )
   }
 
-  nameChangedHandler = (event) =>{
-    this.setState( {
-      persons: [
-        {name: 'Liza', age: 17},
-        {name: event.target.value, age: 45}
-      ]
-    } )
+  showPersonHandler = () => {
+    this.setState(
+      {
+        showPersons: (!this.state.showPersons)
+      }
+      
+    )
+  }
+
+  deletePersonHandler = (index) =>{
+    let newPersons = [...this.state.persons] // create deep copy
+    newPersons.splice(index, 1);
+    this.setState({
+      persons:newPersons
+    })
   }
 
   render(){
-
     const buttonStyle = {
       backgroundColor: 'white',
       color: 'black'
     }
 
+    let persons = null;
+      if (this.state.showPersons){
+          persons = (
+            <div>
+              { this.state.persons.map( (p, index) => 
+                <Person 
+                  name = {p.name} 
+                  age = {p.age}
+                  click = {() => this.deletePersonHandler(index)}
+                  key={p.id}
+                ></Person>)}
+            </div>
+          )
+      }
+
     return (
       <div>
-        <Person 
-          name = {this.state.persons[0].name} 
-          age = {this.state.persons[0].age}
-          click = {this.changeNameHandler.bind(this, 'Ann (from para)')}
-          > 
-          playing the flute 
-          </Person>
-        <Person 
-          name = {this.state.persons[1].name} 
-          age = {this.state.persons[1].age}
-          changed={this.nameChangedHandler}> 
-          learning Illustrator 
-        </Person>
+        <h1> React Complete Guide Exercises</h1>
         <button style = {buttonStyle} className = "btn btn-success mt-4" onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
+        <button style = {buttonStyle} className = "btn btn-warning mt-4" onClick={this.showPersonHandler}>Show Person</button>
+        {persons}
       </div>
     ); 
   }

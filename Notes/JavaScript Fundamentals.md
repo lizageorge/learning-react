@@ -166,9 +166,10 @@ typeOf(NaN); //numbber
     - Comparing strings will compare the first character based on aski values. (Uppercase letter > lower case letters) > (a>z)
         - You can use string.toLowerCase or .toUpperCase to work around thi
 
-- **Conditional Operator ?** 
+- **Conditional(ternary) Operator ?** 
     - in place of an if/else statement
     ```javascript
+    // condition ? expTrue : expFalse
     var result = (foo < 5) ? true: false;
     ```
     - This is equivalent to saying ‘If foo>5, console.log(true), else console.log(false)’
@@ -259,6 +260,7 @@ Makes a copy of a function and assign it a new context
     const [functionName] = ([agruments]) => [returnStatement - leave out the return keyword]
     }
     ```
+    - you should use arrow functions anytime you create a method that will be called and includes use of the `this` keyword
 
 
 
