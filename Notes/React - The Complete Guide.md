@@ -217,6 +217,9 @@
     }
     ```
 
+## Using Conditional Content and Lists
+- Just remember, you can use everything that coms with JavaScript, you just need to know how to incorporate it to different components
+
 ### Rendering Content Conditionally
 - Within your return/render method itself, you can include ternary operators within curly braces
     - here, we check for the state property showPersons; if it's true, the JSX for rendering the Persons elements will pass, if not then nothing ('`null`') will happen. The togglePersonsHandler method will make sure the state switches correctly
@@ -262,4 +265,12 @@
     ```
 - every element JS works with has a `key` property. By assigning something unique to certain elements, you can make sure that React only renders things that have changed and need to be rerendered. 
     ```javascript
-    
+    { this.state.persons.map( (p, index) => 
+        <Person 
+            name = {p.name} 
+            age = {p.age}
+            click = {() => this.deletePersonHandler(index)}
+            key={p.id}
+            changed = {(event) => this.nameChangedHandler(event, key)}
+        ></Person>)}
+    ```

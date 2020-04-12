@@ -12,14 +12,27 @@ class App extends Component{
   }
 
 
-  changeNameHandler = (newName) =>{ // a functions definition within a function definition
-    // DON'T DO THIS this.state.persons[0].name = 'Ann';
-    this.setState( {
-      persons: [
-        {name: newName, age: 17},
-        {name: 'George', age: 45}
-      ]
-    } )
+  // changeNameHandler = (newName) =>{ // a functions definition within a function definition
+  //   // DON'T DO THIS this.state.persons[0].name = 'Ann';
+  //   this.setState( {
+  //     persons: [
+  //       {name: newName, age: 17},
+  //       {name: 'George', age: 45}
+  //     ]
+  //   } )
+  // }
+
+  nameChangedHandler = (event, key) =>{
+    const personIndex = this.state.persons.findIndex((p) => {
+        return p.id == key;
+    });  
+    const person = { ... this.state.persons[personIndex]};
+    person.name = event.target.value;
+
+    const newPersons = [...this.state.persons];
+    newPersons[personIndex] = person;
+
+    this.setState({ persons: newPersons})
   }
 
   showPersonHandler = () => {
@@ -54,7 +67,8 @@ class App extends Component{
                   name = {p.name} 
                   age = {p.age}
                   click = {() => this.deletePersonHandler(index)}
-                  key={p.id}
+                  key ={p.id}
+                  changed = {(event) => this.nameChangedHandler(event, p.id)}
                 ></Person>)}
             </div>
           )
