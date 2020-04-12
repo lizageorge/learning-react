@@ -15,13 +15,11 @@ class App extends Component {
 
     const newCharArray = [...newInput]
     const newChars = [];
-    let index = 0;
-    newCharArray.map(c =>{
+    newCharArray.map((c, index) =>{
         newChars[index] = {
           char: c,
           index: index
         }
-        index++;
     })
 
     this.setState({
@@ -34,10 +32,8 @@ class App extends Component {
     charsCopy.splice(index, 1)
 
     const charArray = []
-    let customIndex = 0;
-    charsCopy.map(c =>{
-      charArray[customIndex] = c.char
-      customIndex++;
+    charsCopy.map((c, index) =>{
+      charArray[index] = c.char
     })
     this.setState({
       chars: charsCopy,
@@ -66,17 +62,6 @@ class App extends Component {
               )
             }
 
-            {/* <div className='container'>
-              <p> Characters: </p>
-              <div className='row'>
-                {
-                  this.state.charArray.map((c) => 
-                    <CharComponent char={c}>test2</CharComponent>
-                  )
-                }
-              </div>
-            </div> */}
-
 
             <hr />
             <ol>
@@ -99,3 +84,11 @@ class App extends Component {
 }
 
 export default App;
+
+/* Exercise Results
+- I forgot to specify input type
+- I didn't include two-way binding on the input
+- It's best practice to include all logic outside the render method, so I should have put the chars map outside in a variable and rendered that
+- The whole char display could have been done much more succinctly  
+  - i didn't know that index was a built-in feature of map
+*/
