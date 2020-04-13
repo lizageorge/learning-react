@@ -315,4 +315,6 @@
 
 
 ## Debugging React Apps
-- The error messages
+- The error messages are usually clear and give the line number of the offending command. They're pretty :thumbs-up:
+    - You can add your own errors (standard JS feature), but you can also create a new class-based component (**Error-Boundaries**) that will handle your errors, and wrap you root component (or anything more specific) with that component (now a higher-order component). Now when you run your code on build mode, an error will be caught, and a custom error message can be shown instead of the whole page being replaced with DevTool's error message. It's recommended to only use this where you can predict a possible error, not wrap all of your code in them.  
+- To find logic errors (run-time errors that the compiler won't point out), use the Chromium Developer Tools of the browser, and under the sources tab you can find all of *your* source code, and use the debugger. Or, you can add the React Developer Tools extension to find Components and Profiler in the Chromium DevTools. 
