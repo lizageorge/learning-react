@@ -199,9 +199,9 @@
 
             - whether you use func or class-based components, a component can be **statefull** (aka container/smart components) or **stateless** (or presentational/dumb components) depending on whether or not it uses state. It's best practice to use as few statefull components and more statefull components as possible.
 
-### Styling
-- Anytime you make a new stylesheet you must link it to the corresponding JS file by importing it at the top. Webpack will automatically insert your code to the public html file in the most efficient way possible. In this workflow, you make a lot of small CSS stylesheets. This will apply globally
-- Alternatively, you could use **in-line styling**, where you include a variable with styling properties inside the JS render method, and link it to the corresponding html element in return's parameter. This method is best for when you want a style to be isolated to a small component.
+## Styling
+- Anytime you make a new stylesheet you must link it to the corresponding JS file by importing it at the top. Webpack will automatically insert your code to the public html file in the most efficient way possible. In this workflow, you make a lot of small CSS stylesheets. This will apply globally.
+- Alternatively, you could use **in-line styling**, where you include a variable with styling properties inside the JS render method, and link it to the corresponding html element in return's parameter. This method is best for when you want a style to be isolated to a small component (scoped).
     ```javascript
     render(){
         const buttonStyle = {
@@ -216,6 +216,44 @@
         ); 
     }
     ```
+- If you want *dynamic styling*, include definitions for the `style` variable inside if statements/however you make the rest of the content dynamic. If you want to dynamically edit the `className`s of different components (to work with Bootstrap, for example), simply make a new variable for the list of classes (an array of strings), and replace the className value with that var name and `.join(' ')` attached to the end. Remember, everything - including the HTML and styling and React - is all JS.
+- if you want to use psuedoclasses and mediaqueries with JS inline styles, you can use something called **Radium** 
+    - use npm to install radium and import it to the appropriate files
+    - at the bottom where you export your component, wrap it with the Radium feature (this creates *high order components*)
+        ```javascript
+        export default Radium(App)
+        ```
+    - now in your style definitions, use the following syntax for psuedoclases;
+        ```javascript
+        const style = {
+            `:hover`:{
+                color: 'red'
+            }
+        }
+        //overriding it later
+        style['hover'] = { //note that you can't acces what should be an object property with a period, bc of the string format
+            color: 'green'
+        }
+        ```
+    - for transformative selectors (like media queries), you'll have to first wrap your entire return() method contents in the root component with  `<StyleRoot></StyleRoot>`, and use the following syntax; 
+        ```javascript
+        const style = {
+            `@media (min-width: 500px)`:{
+                width: 450px
+            }
+        }
+        ```
+- alternatively, you can use the **stylecomponents** library, which uses JS's tagged ticks to transform all regular html elements to include CSS.   
+    - to use styledsheet...
+        - install and import styledcomponents to the applicable file
+        - set up a variabele to hold styles, like before, but set it to equal the output of a method called `style.[htmlElementName``]` with CSS styles instered inbetween the ticks
+            - if you want to use pseudoclasses, include an `&` before the name of the property (like `&:hover: {} `)
+        - wrap the applicable render contents in a tag with the name of that var
+    - styledcomponent will create html elements as you specify and create CSS files to link them to
+    - if you want to make this styling dynamic, include an `alt{}` config in the HTML tag you entered earlier, with a boolean inside. Then where you define the value of the CSS properties, include JS that accepts `props` to complete the conditional statement inside `${}`
+
+- alternatively, you can scope your CSS files to certain components using **CSS Modules**. You need to update you webpack configs to include `module:true` and a localIndenName to css.test. Now in your JS, change your CSS file import statement to include a name (for example, `import classes from '.\App.css'`), replace all CSS file className calls with `{classes.{the class name}}`. If you want styles to only aply to certain componenets, include the component name in front of all the class names in the CSS file and JS component. Watch out that the never React versions have a different syntax to work with
+
 
 ## Using Conditional Content and Lists
 - Just remember, you can use everything that coms with JavaScript, you just need to know how to incorporate it to different components
@@ -274,3 +312,7 @@
             changed = {(event) => this.nameChangedHandler(event, key)}
         ></Person>)}
     ```
+
+
+## Debugging React Apps
+- The error messages
