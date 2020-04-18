@@ -11,7 +11,7 @@
 - there are two kinds of applications
     - *single-page application* = there is only one HTML page, all content is (re)rendered as components, keeping all function calls in one variable (app, root, etc.) and have a sinle ReactDOM.render() calling that var
         - faster, more popular
-    -*multi-page application* = multiple HTML pages, content is rerendered on the server, not all content is in React components and there is a ReactDOM.render() per widget
+    - *multi-page application* = multiple HTML pages, content is rerendered on the server, not all content is in React components and there is a ReactDOM.render() per widget
 
 ### Setting up a React project
 - you can use NPM or yarn to use create-react-app and download all the necessary files and organizes the package.json and the public and src folders
@@ -33,7 +33,7 @@
     );
     ```
 ### Using Components
-- to *create a component*, create a function that returns the JSX code you're repeating in a new file.
+- to *create a component*, create a function/class that returns the JSX code you're repeating in a new file.
     ```javascript
     import React from 'react';
 
@@ -50,69 +50,58 @@
     - **JSX** is a way to insert HTML markdown straight into a JS file, and is recommended by React. You can insert any JS *statements* into JSX HTML by surrrounding it in curly braces. You can make your JSX code multi-lined for readibility, so it looks like HTML, just be sure to put that in parentheses to avoid automaic semicoon insertion. JSX is also able to avoid injection attacks by escaping certain symbols like angle brackets. 
 
 ### Making an ineractive/dynamic page
-    - there are two ways to change the content of a page dynamically and selectively; change a prop inputted to a component, or change the state of a component. This way, React can watch the Vitrual DOM - that you can make specific changes to - find the specific area that changes, and rerenders just that bit of the DOM.
-        - to output *dynamic content* from the component, use `{}` within the "html" content space to distinguish your code statement from text.  use **props** to receive parameters passed as the html-ish configs and `props.children` to access content between the tags (which can be more html-ish). You can also pass in functions if you want.
-                - to achieve the equivalent of outputting "I am Liza and I am 17,..." with this...
+- there are two ways to change the content of a page dynamically and selectively; change a prop inputted to a component, or change the state of a component. This way, React can watch the Vitrual DOM - that you can make specific changes to - find the specific area that changes, and rerenders just that bit of the DOM.
+    - to output *dynamic content* from the component, use `{}` within the "html" content space to distinguish your code statement from text.  use **props** to receive parameters passed as the html-ish configs and `props.children` to access content between the tags (which can be more html-ish). You can also pass in functions if you want.
+        - to achieve the equivalent of outputting "I am Liza and I am 17,..." with this...
+        
+        ``` javascript
+        <div>
+            <Person name = "Liza" age = "17"> playing the flute </Person>
+            <Person name = "George" age = "45"> learning Illustrator </Person>
+        </div> 
+        ``` 
+        - do this...
+        ```javascript
+        //in Person.js's function definition...
+        return(
+            <p> I'm {props.name} and I am {props.age} years old. My hobbies include {props.children}!</p>
+        );
+        ```
+    - to dynamically change a page according to component data, you need to use the `state` property in the final App class. State is a way to actvely update selective parts of a page because re-rendering a component (or parts of a component) is triggered when the methods meant to update that state are called
+        - This is only possible on **class-based components** (as opposed to **function-based components**, which is what we've been using so far), which requires the extension of Component and the importing of Component too. 
+            - Set the contents of the `state` property to something to be changed, and use `this.state` in your render method to access that; if anything in state is changed, it will *automatically tell React to update the DOM re-render the page*
+            - We're using a button to change the contents; there's a specific list of events with corresponding methods to use. Create a method to specify what happens on the event (the naming convention here is to end the method name in "Handler"), in which you should use `setState()` to overside a property of state. Do not try and directly access and change a specific value, because it could mess with other properties. We're also using two-way binding here, connecting the input inserted on the page to the actual value in the code, by setting `value = {props.name}` in the Person definition. This allows the input field to display he right value right when the program is opened.
                 ```javascript
-                <div>
-                    <Person name = "Liza" age = "17"> playing the flute </Person>
-                    <Person name = "George" age = "45"> learning Illustrator </Person>
-                </div> 
-                ``` 
-                - do this...
-                ```javascript
-                //in Person.js's function definition...
-                return(
-                    <p> I'm {props.name} and I am {props.age} years old. My hobbies include {props.children}!</p>
-                );
-                ```
-        - to dynamically change a page according to component data, you need to use the `state` property in the final App class. State is a way to actvely update selective parts of a page because re-rendering a component (or parts of a component) is triggered when the methods meant to update that state are called
-            - This is only possible on **class-based components** (as opposed to **function-based components**, which is what we've been using so far), which requires the extension of Component and the importing of Component too. 
-                - Set the contents of the `state` property to something to be changed, and use `this.state` in your render method to access that; if anything in state is changed, it will *automatically tell React to update the DOM re-render the page*
-                - We're using a button to change the contents; there's a specific list of events with corresponding methods to use. Create a method to specify what happens on the event (the naming convention here is to end the method name in "Handler"), in which you should use `setState()` to overside a property of state. Do not try and directly access and change a specific value, because it could mess with other properties. We're also using two-way binding here, connecting the input inserted on the page to the actual value in the code, by setting `value = {props.name}` in the Person definition. This allows the input field to display he right value right when the program is opened.
-                    ```javascript
-                    //App.JS
-                    class App extends Component{
-                        state = {
-                            persons: [
-                            {name:'Liza', age: 17},
-                            {name: 'George', age: 45}
-                            ]
-                        }
-
-                        changeNameHandler = () =>{
-                            // DON'T DO THIS this.state.persons[0].name = 'Ann';
-                            this.setState( {
-                            persons: [
-                                {name:'Ann', age: 17},
-                                {name: 'George', age: 45}
-                            ]
-                            } )
-                        }
-
-                        render() {
-                            return(
-                            <div>
-                                <Person name = {this.state.persons[0].name} age = {this.state.persons[0].age}> playing the flute </Person>
-                                <Person name = {this.state.persons[1].name} age = {this.state.persons[1].age}> learning Illustrator </Person>
-                                <button onClick={this.changeNameHandler}>Change Name</button>
-                            </div>
-                            );
-                        }
+                //App.JS
+                class App extends Component{
+                    state = {
+                        persons: [
+                        {name:'Liza', age: 17},
+                        {name: 'George', age: 45}
+                        ]
                     }
-                    //Person.js
-                    const person =  (props) => {
-                        return (
-                            <div>
-                                <p onClick = {props.click}> I'm {props.name} and I am {props.age} years old. My hobbies include {props.children}!</p>
-                                <input className="form-control" type="text" onChange={props.changed} value={props.name}></input>
-                            </div>
-                        )
-                    };
-                    ``` 
-                - here we're setting it up to accept input, listen for an event, and change with that event to display the inputted text. The handler method is accepting an `event` object.
-                ```javascript
-                //inside Person.js
+
+                    changeNameHandler = () =>{
+                        // DON'T DO THIS this.state.persons[0].name = 'Ann';
+                        this.setState( {
+                        persons: [
+                            {name:'Ann', age: 17},
+                            {name: 'George', age: 45}
+                        ]
+                        } )
+                    }
+
+                    render() {
+                        return(
+                        <div>
+                            <Person name = {this.state.persons[0].name} age = {this.state.persons[0].age}> playing the flute </Person>
+                            <Person name = {this.state.persons[1].name} age = {this.state.persons[1].age}> learning Illustrator </Person>
+                            <button onClick={this.changeNameHandler}>Change Name</button>
+                        </div>
+                        );
+                    }
+                }
+                //Person.js
                 const person =  (props) => {
                     return (
                         <div>
@@ -121,83 +110,95 @@
                         </div>
                     )
                 };
-                //inside App.js
-                nameChangedHandler = (event) =>{
+                ``` 
+            - here we're setting it up to accept input, listen for an event, and change with that event to display the inputted text. The handler method is accepting an `event` object.
+            ```javascript
+            //inside Person.js
+            const person =  (props) => {
+                return (
+                    <div>
+                        <p onClick = {props.click}> I'm {props.name} and I am {props.age} years old. My hobbies include {props.children}!</p>
+                        <input className="form-control" type="text" onChange={props.changed} value={props.name}></input>
+                    </div>
+                )
+            };
+            //inside App.js
+            nameChangedHandler = (event) =>{
+                this.setState( {
+                persons: [
+                    {name: 'Liza', age: 17},
+                    {name: event.target.value, age: 45}
+                ]
+                } )
+            }
+            /// ...
+            <Person 
+                name = {this.state.persons[1].name} 
+                age = {this.state.persons[1].age}
+                changed={this.nameChangedHandler}> 
+                learning Illustrator 
+            </Person>
+            ```
+
+            - *More on events*
+                -  the JS `.addEventListener()` method takes two objects; a string called type, and an EventListener object of type listener. Every html element has an EventListener, which is just an object that keeps track of all info related to possible events (mouse position, hover status, click status, etc.). When you call the method, you will include a function (can be an arrow func) into the second parameter specifying what should happen on an event. You would repeat this once for each element used for interaction. 
+            - now, the page will smoothly change the displayed name from Liza to Ann once the button is clicked without having to reload the whole page~!
+            - if you want to *pass in parameters to the functions called inside a component, incl when you're passing as props*, you either use the bind() method or an arrow function
+                - using `.bind()`, you have to pass in the `this` keyword in front of whatever parameters you're including
+                ```javascript
+                changeNameHandler = (newName) =>{ //the modified function now accepts a parameter
                     this.setState( {
                     persons: [
-                        {name: 'Liza', age: 17},
-                        {name: event.target.value, age: 45}
+                        {name: newName, age: 17},
+                        {name: 'George', age: 45}
                     ]
                     } )
                 }
-                /// ...
-                <Person 
-                    name = {this.state.persons[1].name} 
-                    age = {this.state.persons[1].age}
-                    changed={this.nameChangedHandler}> 
-                    learning Illustrator 
-                </Person>
+                /// ... inside the render function...
+                <button onClick={this.changeNameHandler.bind(this, 'Ann (from button)')}>Change Name</button>
+                ```
+                - using an arrow function, you're basically returning the function call, which is why this is the only time you'll see the `()` inside the component (also a bit inneficient)
+                ```javascript
+                <button onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
                 ```
 
-                - *More on events*
-                    -  the JS `.addEventListener()` method takes two objects; a string called type, and an EventListener object of type listener. Every html element has an EventListener, which is just an object that keeps track of all info related to possible events (mouse position, hover status, click status, etc.). When you call the method, you will include a function (can be an arrow func) into the second parameter specifying what should happen on an event. You would repeat this once for each element used for interaction. 
-                - now, the page will smoothly change the displayed name from Liza to Ann once the button is clicked without having to reload the whole page~!
-                - if you want to *pass in parameters to the functions called inside a component, incl when you're passing as props*, you either use the bind() method or an arrow function
-                    - using `.bind()`, you have to pass in the `this` keyword in front of whatever parameters you're including
-                    ```javascript
-                    changeNameHandler = (newName) =>{ //the modified function now accepts a parameter
-                        this.setState( {
+
+        - To use state on function-based components, you will have to use **react hooks**, a feature available from React 16.8
+            - = react functions that allow you to add functionality to function-based components
+            - import the hook `useState()` from react and use it in your main component. useState() will always return an array of two elements, first is the current state expressed as an object and the second is a funciton to update (replace!) that state . The best way to use useState() is to call it multiple times to update the state alongside the replacing method it comes with.
+                ```javascript
+                const App = props =>{
+                    const [personState, setPersonsState] = useState ({
                         persons: [
-                            {name: newName, age: 17},
-                            {name: 'George', age: 45}
+                        {name:'Liza', age: 17},
+                        {name: 'George', age: 45}
                         ]
-                        } )
-                    }
-                    /// ... inside the render function...
-                    <button onClick={this.changeNameHandler.bind(this, 'Ann (from button)')}>Change Name</button>
-                    ```
-                    - using an arrow function, you're basically returning the function call, which is why this is the only time you'll see the `()` inside the component (also a bit inneficient)
-                    ```javascript
-                    <button onClick={() => this.changeNameHandler('Ann (from button)')}>Change Name</button>
-                    ```
+                    });
 
 
-            - To use state on function-based components, you will have to use **react hooks**, a feature available from React 16.8
-                - = react functions that allow you to add functionality to function-based components
-                - import the hook `useState()` from react and use it in your main component. useState() will always return an array of two elements, first is the current state expressed as an object and the second is a funciton to update (replace!) that state . The best way to use useState() is to call it multiple times to update the state alongside the replacing method it comes with.
-                    ```javascript
-                    const App = props =>{
-                        const [personState, setPersonsState] = useState ({
+                    const changeNameHandler = () =>{ // a functions definition within a function definition
+                        // DON'T DO THIS this.state.persons[0].name = 'Ann';
+                        setPersonsState( 
+                            {
                             persons: [
-                            {name:'Liza', age: 17},
-                            {name: 'George', age: 45}
+                                {name:'Ann', age: 17},
+                                {name: 'George', age: 45}
                             ]
-                        });
+                            }
+                        );
+                    }
 
+                    return(
+                        <div>
+                        <Person name = {personState.persons[0].name} age = {personState.persons[0].age}> playing the flute </Person>
+                        <Person name = {personState.persons[1].name} age = {personState.persons[1].age}> learning Illustrator </Person>
+                        <button onClick={changeNameHandler}>Change Name</button>
+                        </div>
+                    ); 
+                };
+                ```
 
-                        const changeNameHandler = () =>{ // a functions definition within a function definition
-                            // DON'T DO THIS this.state.persons[0].name = 'Ann';
-                            setPersonsState( 
-                                {
-                                persons: [
-                                    {name:'Ann', age: 17},
-                                    {name: 'George', age: 45}
-                                ]
-                                }
-                            );
-                        }
-
-                        return(
-                            <div>
-                            <Person name = {personState.persons[0].name} age = {personState.persons[0].age}> playing the flute </Person>
-                            <Person name = {personState.persons[1].name} age = {personState.persons[1].age}> learning Illustrator </Person>
-                            <button onClick={changeNameHandler}>Change Name</button>
-                            </div>
-                        ); 
-                    };
-                    ```
-
-            - whether you use func or class-based components, a component can be **statefull** (aka container/smart components) or **stateless** (or presentational/dumb components) depending on whether or not it uses state. It's best practice to use as few statefull components and more statefull components as possible.
+        - whether you use func or class-based components, a component can be **statefull** (aka container/smart components) or **stateless** (or presentational/dumb components) depending on whether or not it uses state. It's best practice to use as few statefull components and more statefull components as possible.
 
 ## Styling
 - Anytime you make a new stylesheet you must link it to the corresponding JS file by importing it at the top. Webpack will automatically insert your code to the public html file in the most efficient way possible. In this workflow, you make a lot of small CSS stylesheets. This will apply globally.
@@ -318,3 +319,38 @@
 - The error messages are usually clear and give the line number of the offending command. They're pretty :thumbs-up:
     - You can add your own errors (standard JS feature), but you can also create a new class-based component (**Error-Boundaries**) that will handle your errors, and wrap you root component (or anything more specific) with that component (now a higher-order component). Now when you run your code on build mode, an error will be caught, and a custom error message can be shown instead of the whole page being replaced with DevTool's error message. It's recommended to only use this where you can predict a possible error, not wrap all of your code in them.  
 - To find logic errors (run-time errors that the compiler won't point out), use the Chromium Developer Tools of the browser, and under the sources tab you can find all of *your* source code, and use the debugger. Or, you can add the React Developer Tools extension to find Components and Profiler in the Chromium DevTools. 
+
+
+## Diving Deeper into Componenets and React Internals
+### A good Project Structure
+- each component should have a single, unique purpose, and be 'granular' (small)
+- use function-based components for visual elements that don't involve state, and class-based components to use state
+- container components/the rendering component shoudln't have much UI specifiying. For example, it's better practice to have a component for Person, a component for PersonList/Persons, and include just the Persons component in the render() method
+    ```javascript
+    //Persons.js
+    import React from 'react'
+    import Person from './Person/Person'
+
+    const persons = (props) => props.persons.map((p, index) =>
+        <Person
+            name={p.name}
+            age={p.age}
+            click={() => props.click(index)} //calling that method
+            key={p.id}
+            changed={(event) => props.changed(event, p.id)}
+        ></Person>);
+
+    export default persons;
+
+    //App.js
+    persons = (
+            <Persons
+            persons={this.state.persons}
+            click={this.deletePersonHandler} //passing in method references
+            changed={this.nameChangedHandler}
+            />
+        )
+    ```
+- A recommended folder structure is to have folders for Components, Assests(images, etc.), and Containers in the src folder. 
+    - The container component ([]App.js) only includes the state, the handler methods, and the render method
+    - You can create a 'cockpit' component to hold the displaying for the header, the logic associated with that (incl. for styling) etc.
