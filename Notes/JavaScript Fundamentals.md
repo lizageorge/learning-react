@@ -214,24 +214,63 @@ typeOf(NaN); //numbber
     - = Immediately Invoked Function Expression
         - Function Expression = using it
         - Immediately invoked = it’ll happen the moment it’s defined
-The function is defined, made into a statement by putting it in (), and invoked at the same time
-Assign the IIFE to a variable and you call the function by using the variable name. You never name the function. A standard variable name to assign an IIFE is ‘app’. But only the function’s return value will be returned to the variable!
- 
-→ in function (from the immediately invoked function),
-     {} (from when the variable was called, not the variable)
-IIFEs were a way to organize code before modules
+        ```javascript
+        (functionName() {
+            console.log('in function');
+        })(); // <-- immediately called right here
+        ```
+        - The function is defined, made into a statement by putting it in (), and invoked at the same time
+    - Assign the IIFE to a variable and you call the function by using the variable name. You never name the function. A standard variable name to assign an IIFE is ‘app’. But only the function’s return value will be returned to the variable!
+        ```javascript
+        let app = (function() {
+            let carId= 123;
+            console.log('in function')
+            return{};
+        })();
 
-Closures 
-If you want the function’s scope stuffs to extend after the code runs through, have it return an object holding a variable. That variable can refer to a variable inside the function scope, since it’s still part of the function, and just that inside-function-scope-variable can be called from outside the scope
-It’s like mimicking a class with variables and functions
- → 123
+        console.log(app);
+        ```
+        - → in function *(from the immediately invoked function)*,
+            {} *(from when the variable was called, not the variable)*
+    - IIFEs were an old way to organize code before modules
 
-The this keyword 
-Refers to the context of a function. For example, if you had a function in an object as a property, using this would be the same as using the name of the object, ie. the object is the context.
+- **Closures** 
+    - If you want the function’s scope stuffs to extend after the code runs through, have it return an object holding a variable. That variable can refer to a variable inside the function scope, since it’s still part of the function, and just that inside-function-scope-variable can be called from outside the scope
+    - It’s like mimicking a class with variables and functions
+        ```javascript
+        let app = (function(){
+            let carId = 123;
+            let getId = function(){
+                return carId;
+            };
+            return {
+                getId: getId
+            };
+        })();
+        console.log(app.getId() ); // --> 123
+        ```
 
-If you had a function outside of any object, then the context is just the whole window (which is a global object that stores all this stuff)
+- **The** `this` **keyword** 
+    - Refers to the *context* of a function. For example, if you had a function in an object as a property, using `this` would be the same as using the name of the object, ie. the object is the context.
+    ```javascript
+    let o = {
+        carId: 123,
+        getId = function(){
+            return carId;
+        }
+    };
 
-So this is usually used to make objects with functions as properties
+    console.log (o.getId() ); // --> 123
+    ```
+    - If you had a function outside of any object, then the context is just the whole *window* (which is a global object that stores all this stuff)
+        ```javascript
+        let fn = function() {
+            console.log(this == window);
+        };
+
+        fn(); //true
+        ```
+    - So this is usually used to make objects with functions as properties
 
 Call, apply and bind
 There are different ways of using a function; you can invoke it [functionName](), call it or apply to change the value of this

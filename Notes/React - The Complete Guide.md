@@ -6,7 +6,7 @@
 ## The Basics
 - React is a Javascript library used to make the creation and maintanance of UIs easier. JS applications, because they run entirely on the browser, are fast.
 - alternatives incl. Angular and Vue
-- It's structured to be a *heirarchy of components*, which can be function-based or class-based and can include repeatable HTML code. As per a single-page application, one component will have the primary to render the final html.  
+- It's structured to be a *heirarchy of components*, which can be functional or class-based and can include repeatable HTML code. As per a single-page application, one component will have the primary to render the final html.  
 
 - there are two kinds of applications
     - *single-page application* = there is only one HTML page, all content is (re)rendered as components, keeping all function calls in one variable (app, root, etc.) and have a sinle ReactDOM.render() calling that var
@@ -354,3 +354,44 @@
 - A recommended folder structure is to have folders for Components, Assests(images, etc.), and Containers in the src folder. 
     - The container component ([]App.js) only includes the state, the handler methods, and the render method
     - You can create a 'cockpit' component to hold the displaying for the header, the logic associated with that (incl. for styling) etc.
+
+### More on Statefull vs. Stateless components
+- statefull components were traditionally class based componenets bc react hooks, which allow use of state in function-based componenets are new
+- it's still best practice to restrict the number of satefull componenets, so most of them are presentational/dumb. This keeps the app managable and easy to find logic errors in(they're more likely to be in the statefull components); the flow of data is more predictable
+
+### More on Class-based and functional components
+- class-based components 
+    - ``` class XY extends Component {} ``
+    - can...
+        - access state
+        - use lifecycle
+    - access state and props via `this`
+    - use if you need to manage state (w/o hooks) or access lifecycle
+
+- functional components 
+    - ``` const XY = (props) => {} ``
+    - can..
+        - access state (using react hook useState(), a new feature that the majority of projects don't use)
+        - use props via function props
+    - use in all other cases
+
+- **Component Lifecycle** = there are a few methods that we can add to class-based componenets React will execute at certain stages with automatic cleanup. The lifecyle is those stages combined. 
+    - *at the creation of every component, the following happens...*
+        - React calls a default `constructor(props)` method ( if you modify your constructor, use `super(props)` - don't include sideeffects)
+        - then the react hook `static getDerivedStateFromProps(props, state)` can be called
+        - then the `render()` method is called
+            - everytime this is called, the internal React DOM is re-rendered, not the actual DOM
+        - then any child componenets are created
+        - then the `componentDidMount()` hook is called to signal the end of creation - here you can cause side-effects, but don't call state.
+    - *at the update of any component (whether that's the component's props passed out or content passed in), the following happens...*
+        - the react hook `static getDerivedStateFromProps(props, state)` is called - very rarely use this
+        - then the bool funct `shouldComponentUpdate(nextProps, nextState)` can be called - you can block an update from happening to optimize performance
+        - then the `render()` method is called, then any child componenets are created
+        - then any child componenets are created
+        - then `getSnapshotBeforeUpdate(prevProps, prevState)` can be called for last-minute DOM access ([] to get the last scrolling posision of a user)
+        - then `componentDidUpdate()` can be called - here you can cause side-effects, but don't call state. This i sprobably what you'll use the most often
+
+   - there are a few older lifecycle hooks that aren't used anymore and will  eventually be removed from reach ([] copmonentWillRecieveProps, etc.). They technically can be used, but it's not recommended and again will be removed 
+
+    - you can only access and edit these lifecycle hooks from class-based componenets. But with React hooks, the equivalent  to use when you want to edit what happens at different stages is `useEffect()`
+    
