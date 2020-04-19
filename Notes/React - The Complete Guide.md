@@ -475,3 +475,125 @@
         changeCounter: prevState.changeCounter + 1; //one-line return statement
     })
     ```
+
+### Using propTypes
+- improve the way props are used; when working with a team, it's good to make it clearer what each prop accepts, and send alerts when an incorrect type is passed
+- import `propTypes`, an additional/optional React library. Now after your component definition in the file, call 
+    ```javascript 
+    anotherComponent.propTypes = {
+        propN: PropTypes.[dataType],
+        name: PropTypes.string
+        changed: PropTypes.func
+    }
+    ```
+    - now, if someone tries to pass an int into name, for example, the compiler will return a clear error saying so
+- this is, of course, builtin to TypeScript
+### Using the Context API
+- whenever you have data that you have to pass from Component A to Component D while Componenets B and C doesn't care about that data, you either have to forward it through each component in props (imagine passing authentication info from App >> Persons >> Person), or you can use Context
+- a Context is a JS object that can be made globally available. In your container component, wrap all the components that require access to the information. In your "consuming" component, wrap the elements that will use that info.
+
+```javascript
+//authcontext.js
+import React from 'react'
+
+const AuthContext = React.createContext({
+    authenticated: false,
+    login: () => {}
+});
+
+export default authContext;
+
+//App.js
+return(
+    //..
+    <AuthContext.Provider value = { {authenticated: this.state.authenticated, login: this.loginHandler} }>
+    </AuthContent.Provider>
+)
+
+//Person.js
+render(){
+    return(
+        <AuthContext.Consumer>
+        { (context) => context.authenticated? <p>Authenticated!</p> : <p>Please Log in!</p>}
+        </AuthContext.Consumer>
+    )
+}
+```
+- there is an alternative way to use context in class-based components that will give you access to context info outside just the JSX, starting from React 16.6
+    ```javascript
+    class Person extends Component{
+        //...
+        static contextType = AuthContext; //the name has to be contextType
+
+        componentDidMount(){
+            console.log(this.context.authenticated)
+        }
+    }
+    render(){
+        return(
+            //...
+            {this.context.authenticated ? <p>Authenticated!</p> : <p>Please Log in!</p>}
+        )
+    }
+    ```
+- for functional components, you have to use the React hook `useContext()`
+    ```javascript
+    const cockpit = props =>{
+        const authContext = useContext(AuthContext);
+
+        console.log(authContext.authenticated)
+
+        return(
+            //...
+            {this.context.authenticated ? <p>Authenticated!</p> : <p>Please Log in!</p>}
+        )
+    }
+    ```
+- there's another way to pass data around, called Redux, but that's for another day. 
+
+### Using refs
+- in class based components, you can add the `ref` keyword to the attributes of any JSX element to very easily access that element later on. Here, the last input element will be focused...
+    - older approach...
+        ```javascript
+        componentDidMount(){
+            this.inputElement.focus();
+        }
+        //...
+        render(){
+            //...
+            <input
+                //..
+                ref = { (inputEl)) => this.inputElement = inputEl}
+            >
+        }
+        ```
+    - newer approach...
+        ```javascript
+        contructor(props){
+            super(props),
+            this.inputElementRef = React.createRef()
+        }
+        //...
+        render(){
+            //...
+            <input
+                //..
+                ref = {this.inputElementRef}
+            >
+        }
+        ```
+- in a functional component, you replace React.createRef() with the hook `useRef()`. Here, the button will be clicked every time the page reloads.
+```javascript
+    const toggleBtnRef = useRef(null);
+    useEffect( () =>{
+        toggleBtnRef.current.click();
+    })
+    //...
+    return(
+        //...
+        <button
+            //..
+            ref = {toggleBtnRef}
+        >
+    )
+    ```
