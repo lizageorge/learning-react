@@ -407,3 +407,71 @@
     - if you change your export line to `export defualt memo([componentName])`, React will memoize/store a snapshot of this component. Now, you can tell whenever the component actually changes and rerendering is necessary. This is the equivalent of optimization using `shouldComponentUpdate` with class components. 
     - Still, you shouldn't just wrap every single component export with this bc there are componenets that has to update every time the parent updates - the code to use shouldComponentUpdate() works the same way too. (*"There's a thing called premature optimization - don't do it"*)
     - an alternative to using shouldComponentUpdate is to extend `PureComponent` instead of `Component`, because it automatically comes with a shouldComponentUpdate reference that checks for any changes in the props nicely
+
+### Rendering adjacent top-level JSX element
+- if you remember, you normally can only have one top-level JSX element in the return/render methods. There's a few ways to get around this...
+- you can put your elements into an array, with each having a unique key
+- you can create a component to use purely as a wrapper around the top-level elements in your og component. Every element should be an attribute, and they will be called as props.children. 
+    ```javascript
+    const foo = (props) => props.children;
+    export default from Foo;
+    ```
+- similarily, you can use React.Fragment, which does the same thing.
+
+### Higher Order Components
+- = components that only wrap other components, and don't contain logic or purpose of its own
+    - []<div> that we used to wrap the content of our return methods, or the foo/React.Fragment components from ^
+    - it's convention to use `With[name]` for the name of these components, and place within a folder called "hoc".
+- you can either create a component two wrap all of your JSX in...
+    ```javascript
+    //WithClass.js
+    import React from 'react';
+
+    const WithClass = (props) => {
+        <div>props.children</div>
+    }
+
+    export default from WithClass;
+
+    //App.js
+    //...
+    return(
+        <WithClass>
+            //all JSX
+        <WithClass/>
+    )
+    ```
+- or you create a function that returns a React component to act as a wrapper component
+    ```javascript
+    //withClass.js
+    import React from 'react';
+
+    const withClass = (WrappedComponent, anyAdditionalProps) => { //props for if you want to use it
+        return props =>{
+            <div> <WrappedComponent {...props}/> </div> //this spreading will allow the props from the wrapped class to be successfully passed to it's component file
+        }
+    }
+
+    //App.js
+    return(
+        <anyWrapperClass>
+            //all JSX
+        <anyWrapperClass/>
+    )
+     export default withClass(App, classes.App);
+     ```
+- wrapper classes like this can help add styling, additional html structure, or error handling
+
+### Using setState() correctly
+- if you ever need to change state in a way that depends on what state was before, don't just call this.state like this, because there could be delays among simultaneous setState calls throughout the code and there's no guarantee this will work;
+    ```javascript
+    this.setState({
+        changeCounter: this.state.changeCounter + 1;
+    })
+    ```
+- instead, do this;
+   ```javascript
+    this.setState( (prevState, props) => { //props if you need them
+        changeCounter: prevState.changeCounter + 1; //one-line return statement
+    })
+    ```
