@@ -45,7 +45,7 @@
 
     export default person; 
     ```
-    - use uppercase for file names and folders, but use lowercase for creating classes. the lowercases are reserved for JSX
+    - use uppercase for file names and folders, and use uppercase for creating all components. the lowercases are reserved for JSX
 - *A Bit about JSX*
     - **JSX** is a way to insert HTML markdown straight into a JS file, and is recommended by React. You can insert any JS *statements* into JSX HTML by surrrounding it in curly braces. You can make your JSX code multi-lined for readibility, so it looks like HTML, just be sure to put that in parentheses to avoid automaic semicoon insertion. JSX is also able to avoid injection attacks by escaping certain symbols like angle brackets. 
 
@@ -357,6 +357,7 @@
 
 ### More on Statefull vs. Stateless components
 - statefull components were traditionally class based componenets bc react hooks, which allow use of state in function-based componenets are new
+- in react, *data flows down*; neither parent nor child component needs to know if another component is function/class or statefull/staeless. State is encapsulated, so it cannot be accessed by any component other than the one that owns/defines it. However, state can be passed down as props to child components, creating a top-down data flow.
 - it's still best practice to restrict the number of satefull componenets, so most of them are presentational/dumb. This keeps the app managable and easy to find logic errors in(they're more likely to be in the statefull components); the flow of data is more predictable
 
 ### More on Class-based and functional components
@@ -375,23 +376,34 @@
         - use props via function props
     - use in all other cases
 
-- **Component Lifecycle** = there are a few methods that we can add to class-based componenets React will execute at certain stages with automatic cleanup. The lifecyle is those stages combined. 
-    - *at the creation of every component, the following happens...*
-        - React calls a default `constructor(props)` method ( if you modify your constructor, use `super(props)` - don't include sideeffects)
-        - then the react hook `static getDerivedStateFromProps(props, state)` can be called
-        - then the `render()` method is called
-            - everytime this is called, the internal React DOM is re-rendered, not the actual DOM
-        - then any child componenets are created
-        - then the `componentDidMount()` hook is called to signal the end of creation - here you can cause side-effects, but don't call state.
-    - *at the update of any component (whether that's the component's props passed out or content passed in), the following happens...*
-        - the react hook `static getDerivedStateFromProps(props, state)` is called - very rarely use this
-        - then the bool funct `shouldComponentUpdate(nextProps, nextState)` can be called - you can block an update from happening to optimize performance
-        - then the `render()` method is called, then any child componenets are created
-        - then any child componenets are created
-        - then `getSnapshotBeforeUpdate(prevProps, prevState)` can be called for last-minute DOM access ([] to get the last scrolling posision of a user)
-        - then `componentDidUpdate()` can be called - here you can cause side-effects, but don't call state. This i sprobably what you'll use the most often
+### Component Lifecycle
+-  = React will call a certain few methods at certain stages, with automatic cleanup. The lifecyle is those stages combined. In class-based components, we can use these methods to specify additional instructions to React for those stages.
+- *at the creation of every component, the following happens...*
+    - React calls a default `constructor(props)` method ( if you modify your constructor, use `super(props)` - don't include sideeffects)
+    - then the react hook `static getDerivedStateFromProps(props, state)` can be called
+    - then the `render()` method is called
+        - everytime this is called, the internal React DOM is re-rendered, not the actual DOM
+    - then any child componenets are created
+    - then the `componentDidMount()` hook is called to signal the end of creation - here you can cause side-effects, but don't call state. (edit `componentWillUnmount()`)
+- *at the update of any component (whether that's the component's props passed out or content passed in), the following happens...*
+    - the react hook `static getDerivedStateFromProps(props, state)` is called - very rarely use this
+    - then the bool funct `shouldComponentUpdate(nextProps, nextState)` can be called - you can block an update from happening to optimize performance. You can shallow compare the next state to the currect state
+    - then the `render()` method is called, then any child componenets are created
+    - then any child componenets are created
+    - then `getSnapshotBeforeUpdate(prevProps, prevState)` can be called for last-minute DOM access ([] to get the last scrolling posision of a user)
+    - then `componentDidUpdate()` can be called - here you can cause side-effects, but don't call state. This i sprobably what you'll use the most often
 
-   - there are a few older lifecycle hooks that aren't used anymore and will  eventually be removed from reach ([] copmonentWillRecieveProps, etc.). They technically can be used, but it's not recommended and again will be removed 
+- there are a few older lifecycle hooks that aren't used anymore and will  eventually be removed from reach ([] copmonentWillRecieveProps, etc.). They technically can be used, but it's not recommended and again will be removed 
 
-    - you can only access and edit these lifecycle hooks from class-based componenets. But with React hooks, the equivalent  to use when you want to edit what happens at different stages is `useEffect()`
-    
+- you can only access and edit these lifecycle hooks from class-based componenets. But with React hooks, the equivalent to use when you want to edit what happens at different stages is `useEffect()`. 
+    - If you pass in a function, it will pass that function anytime the corresponding component is rerendered in the React DOM. 
+    - A second argument passed should be an array of elements to watch - now the function will only pass when that element changes. If you pass an empty array, it will run only when the component is first created. 
+    - if you want something to execute right when the component is gotten rid of/unmounted, include it in the return() of the specified method passed in the first argument and pass an empty array in the second argument (the equivalent of using componentWillUnmount() on class components)
+    - You can have as many useEffect() calls as you want. 
+    - **In later versions of React, a function-based component must have a capitalized name to be recognized as a function component for this to work*
+
+- **Optimizing re-rendering**
+    - Use `shouldComponentUpdate` with class components. 
+    - if you change your export line to `export defualt memo([componentName])`, React will memoize/store a snapshot of this component. Now, you can tell whenever the component actually changes and rerendering is necessary. This is the equivalent of optimization using `shouldComponentUpdate` with class components. 
+    - Still, you shouldn't just wrap every single component export with this bc there are componenets that has to update every time the parent updates - the code to use shouldComponentUpdate() works the same way too. (*"There's a thing called premature optimization - don't do it"*)
+    - an alternative to using shouldComponentUpdate is to extend `PureComponent` instead of `Component`, because it automatically comes with a shouldComponentUpdate reference that checks for any changes in the props nicely
