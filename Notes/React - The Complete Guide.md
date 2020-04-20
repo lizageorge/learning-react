@@ -596,4 +596,13 @@ render(){
             ref = {toggleBtnRef}
         >
     )
-    ```
+```
+
+## Building a project - Burger Builder
+
+### Planning a React app
+- Step 1: Plan the Component Tree (initial version)
+    - start with a full UI (usually provided by the designer), and make an app component with a root layout component and pick out all the components necessary for that ([] if the UI includes a navbar, the layout component will have a navbar comp., with logo, navbar toggle and nav-items comp.s)
+- Step 2: Plan application state/data
+    - decide what data the application needs, and the component to manage that state ( [] the BurgerBuilder comp. should manage a state with an array of ingredients, total price, etc.)
+- Step 3: Plan which components should be stateless/statefull, what should the containers look like?
