@@ -351,7 +351,7 @@
             />
         )
     ```
-- A recommended folder structure is to have folders for Components, Assests(images, etc.), and Containers in the src folder. 
+- A recommended folder structure is to have folders for Components, Assests(images, etc.), and Containers in the src folder. Of course, add extra folders inside those for convenience.
     - The container component ([]App.js) only includes the state, the handler methods, and the render method
     - You can create a 'cockpit' component to hold the displaying for the header, the logic associated with that (incl. for styling) etc.
 
@@ -602,7 +602,7 @@ render(){
 
 ### Planning a React app
 - Step 1: Plan the Component Tree (initial version)
-    - start with a full UI (usually provided by the designer), and make an app component with a root layout component and pick out all the components necessary for that ([] if the UI includes a navbar, the layout component will have a navbar comp., with logo, navbar toggle and nav-items comp.s)
+    - start with a full UI (usually provided by the designer), and make an app component with a root/wrapper layout component and pick out all the components necessary for that ([] if the UI includes a navbar, the layout component will have a navbar comp., with logo, navbar toggle and nav-items comp.s)
 - Step 2: Plan application state/data
     - decide what data the application needs, and the component to manage that state ( [] the BurgerBuilder comp. should manage a state with an array of ingredients, total price, etc.)
 - Step 3: Plan which components should be stateless/statefull, what should the containers look like?
