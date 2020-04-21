@@ -9,7 +9,8 @@ const Burger = (props) => {
     let transformedIngredients = Object.keys(props.ingredients) //<- creates an array of the keys of the ingredients object
         .map(igKey => { //<- creates an array of the keys (salad, cheese, etc.)
             //we want to an array for each ingredient, with the length of the quantity of that ingredient. The value of the object will provide the key for the arrays and the type.
-            return [...Array(props.ingredients[igKey])].map((_, i) =>{ //the first bit creates an array of arrays, ingredients of the type of the key, of length value. Then he called map on that THAT array to create a BurgerIngredient object with the type of the original key, and with a unique key of its own ("Cheese1", Cheese2". etc.) good lord.
+            //the first bit creates an array of arrays, ingredients of the type of the key, of length value. Then he called map on that THAT array to create a BurgerIngredient object with the type of the original key, and with a unique key of its own ("Cheese1", Cheese2". etc.) good lord.
+            return [...Array(props.ingredients[igKey])].map((_, i) =>{ 
                 return <BurgerIngredient key={igKey + i} type={igKey} />
             });
         })

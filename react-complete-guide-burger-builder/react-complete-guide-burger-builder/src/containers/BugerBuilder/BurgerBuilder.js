@@ -11,12 +11,31 @@ class BurgerBuilder extends Component{
             meat: 0
         }
     }
+
+    addHandler = (type) =>{
+        let myIngredients = {...this.state.ingredients};
+        myIngredients[type]++;
+
+        this.setState({
+            ingredients: myIngredients
+        })
+    }
+    lessHandler = (type) =>{
+        let myIngredients = {...this.state.ingredients};
+        if(myIngredients[type] > 0){
+            myIngredients[type]--;
+        }
+        this.setState({
+            ingredients: myIngredients
+        })
+    }
+
     render() {
         return(
             // <> is a shortcut for React.Fragment
             <>
                 <Burger ingredients={this.state.ingredients}/>
-                <BuildControls/>
+                <BuildControls addHandler = {this.addHandler} lessHandler = {this.lessHandler}/>
             </>
         );
     }
