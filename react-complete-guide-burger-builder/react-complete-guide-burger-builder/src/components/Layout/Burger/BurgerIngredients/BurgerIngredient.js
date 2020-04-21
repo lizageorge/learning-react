@@ -6,6 +6,7 @@ class BurgerIngredient extends Component {
     render(props){
         let ingredient = null;
 
+    //this is kinda amazing...this guy made a bunch of css styles to make divs look like parts of a burger
     switch(this.props.type){
         case('bread-bottom'):
             ingredient = <div className={styles.BreadBottom}> </div>;
