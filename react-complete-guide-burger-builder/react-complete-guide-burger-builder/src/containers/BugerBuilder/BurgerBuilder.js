@@ -16,7 +16,7 @@ class BurgerBuilder extends Component{
             cheese: 0,
             meat: 0
         },
-        price: 0.0
+        price: 1.0
     }
 
     addHandler = (type) =>{
@@ -43,12 +43,17 @@ class BurgerBuilder extends Component{
     }
 
     render() {
+        const disabledInfo = {
+            ...this.state.ingredients
+        };
+        for (let key in disabledInfo){
+            disabledInfo[key] = disabledInfo[key] <= 0;
+        }
         return(
             // <> is a shortcut for React.Fragment
             <>
                 <Burger ingredients={this.state.ingredients}/>
-                <BuildControls addHandler = {this.addHandler} lessHandler = {this.lessHandler}/>
-                <p>Test: {this.state.price} </p>
+                <BuildControls price= {this.state.price} addHandler = {this.addHandler} lessHandler = {this.lessHandler} disabledInfo = {disabledInfo}/>
             </>
         );
     }

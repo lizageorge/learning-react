@@ -13,13 +13,16 @@ const controls = [
 const BuildControls = (props) => {
     return (
         <div className = {styles.BuildControls}>
+            <p>Current Prics: $<strong>{props.price.toFixed(2)}</strong></p>
             {controls.map(ctrl => (
                 <BuildControl 
                     key ={ctrl.label} 
                     label={ctrl.label} 
                     addHandler = {props.addHandler} //his solution was nearly identical to mine, except instead of passing down type...
                     lessHandler = {() => props.lessHandler(ctrl.type)} //he defined the function with the parameter here itself, and used only the function reference on the click listener in BuildControl 
-                    type = {ctrl.type} />
+                    type = {ctrl.type} 
+                    disabledInfo = {props.disabledInfo[ctrl.type]}
+                />
             ))}
         </div>
     )
