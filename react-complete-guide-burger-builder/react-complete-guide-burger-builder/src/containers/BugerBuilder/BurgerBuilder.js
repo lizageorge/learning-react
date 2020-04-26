@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Burger from '../../components/Layout/Burger/Burger';
 import BuildControls from '../../components/Layout/Burger/BuildControls/BuildControls';
+import Modal from '../../components/Modal/Modal';
+import OrderSummary from '../../components/Layout/Burger/OrderSummary/OrderSummary';
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -16,7 +18,21 @@ class BurgerBuilder extends Component{
             cheese: 0,
             meat: 0
         },
-        price: 1.0
+        price: 1.0,
+        purchasable : false,
+        purchasing: false
+    }
+
+    purchaseHandler = () =>{
+        this.setState({purchasing:true});
+    }
+
+    updatePurchaseState(ingredients){
+        const sum = Object.keys(ingredients).map(key => ingredients[key]).reduce((sum, el) => sum+el, 0); //high-key overcomplicating this...just getting a sum of all the ingredients' quantities
+        let myPurchasable = sum>0
+        this.setState(
+            {purchasable: myPurchasable}
+        )
     }
 
     addHandler = (type) =>{
@@ -27,6 +43,7 @@ class BurgerBuilder extends Component{
             ingredients: myIngredients,
             price: myPrice
         })
+        this.updatePurchaseState(myIngredients);
     }
     lessHandler = (type) =>{
         let myIngredients = {...this.state.ingredients};
@@ -40,6 +57,7 @@ class BurgerBuilder extends Component{
             ingredients: myIngredients,
             price: myPrice
         })
+        this.updatePurchaseState(myIngredients);
     }
 
     render() {
@@ -49,11 +67,22 @@ class BurgerBuilder extends Component{
         for (let key in disabledInfo){
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
+
         return(
             // <> is a shortcut for React.Fragment
             <>
+                <Modal show={this.state.purchasing} >
+                    <OrderSummary ingredients={this.state.ingredients}></OrderSummary>
+                </Modal>
                 <Burger ingredients={this.state.ingredients}/>
-                <BuildControls price= {this.state.price} addHandler = {this.addHandler} lessHandler = {this.lessHandler} disabledInfo = {disabledInfo}/>
+                <BuildControls 
+                    price= {this.state.price} 
+                    addHandler = {this.addHandler} 
+                    lessHandler = {this.lessHandler} 
+                    disabledInfo = {disabledInfo}
+                    purchasable = {this.state.purchasable}
+                    purchasing = {this.purchaseHandler}
+                />
             </>
         );
     }
