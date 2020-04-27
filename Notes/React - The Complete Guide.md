@@ -606,3 +606,9 @@ render(){
 - Step 2: Plan application state/data
     - decide what data the application needs, and the component to manage that state ( [] the BurgerBuilder comp. should manage a state with an array of ingredients, total price, etc.)
 - Step 3: Plan which components should be stateless/statefull, what should the containers look like?
+
+### Building Process 
+- always design your styling to be mobie-first, and use media queries to handle for larger sizes
+- if you're not working just by yourself, add PropTypes to all your props (or just use Typsescript lmao)
+- to avoid uncessary rerenders, watch out for using extra pure components, be careful where and when you change state, and use lifecycle methods (esp shouldComponentUpdate()) if necessary
+- remember to use a granular structure, outsource code o reusable components

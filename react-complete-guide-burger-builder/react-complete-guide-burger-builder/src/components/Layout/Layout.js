@@ -1,17 +1,38 @@
-import React from 'react';
+import React, { Component } from 'react';
+
 import styles from './Layout.module.css'; //we're using CSS-modules and the matching naming convention here, as per the new build system's requirements 
-import Toolbar from '../Navigation/Toolbar/Toolbar';
+import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
+import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 
-const Layout = (props) => (
-    // Using React.Fragments is a shorter solution to the multiple-element problem than making an hoc.
-    <React.Fragment> 
-        <div>
-            <Toolbar></Toolbar>
-        </div>
-        <main className={styles.Content}>
-            {props.children}
-        </main>
-    </React.Fragment>
-);
+class Layout extends Component {
+    state = {
+        showSideDrawer: false
+    }
 
-export default Layout
+    sideDrawerClosedHandler = () => {
+        this.setState( { showSideDrawer: false } );
+    }
+
+    sideDrawerToggleHandler = () => {
+        this.setState( ( prevState ) => {
+            return { showSideDrawer: !prevState.showSideDrawer };
+        } );
+    }
+
+    render () {
+        return (
+            // Using React.Fragments is a shorter solution to the multiple-element problem than making an hoc.
+            <>
+                <Toolbar drawerToggleClicked={this.sideDrawerToggleHandler} />
+                <SideDrawer
+                    open={this.state.showSideDrawer}
+                    closed={this.sideDrawerClosedHandler} />
+                <main className={styles.Content}>
+                    {this.props.children}
+                </main>
+            </>
+        )
+    }
+}
+
+export default Layout;
