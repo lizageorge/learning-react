@@ -1,5 +1,5 @@
 # The Bootstrap 4 Bootcamp
-> April 4 - 12 2020
+> April 4 - 12, May 21 -  2020
 > using "React - The complete guide", by Maximilian Schwarzmuller on Udemy
 
 
