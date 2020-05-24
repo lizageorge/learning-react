@@ -23,7 +23,7 @@
     ``` javascript
     return (
         <div className="App">
-        <h1>Hello There!</h1>
+            <h1>Hello There!</h1>
         </div>
     );
     ```
@@ -165,7 +165,7 @@
 
         - To use state on function-based components, you will have to use **react hooks**, a feature available from React 16.8
             - = react functions that allow you to add functionality to function-based components
-            - import the hook `useState()` from react and use it in your main component. useState() will always return an array of two elements, first is the current state expressed as an object and the second is a funciton to update (replace!) that state . The best way to use useState() is to call it multiple times to update the state alongside the replacing method it comes with.
+            - import the hook `useState()` from react and use it in your main component. useState() will always return an array of two elements, first is the current state expressed as an object and the second is a funciton to update (replace!) that state. You initialize it with the starting state in the param. When you call that method, you can either include new state in the param or an arrow function, which should incl the previous state in the param and return a new state object. 
                 ```javascript
                 const App = props =>{
                     const [personState, setPersonsState] = useState ({
@@ -253,7 +253,10 @@
     - styledcomponent will create html elements as you specify and create CSS files to link them to
     - if you want to make this styling dynamic, include an `alt{}` config in the HTML tag you entered earlier, with a boolean inside. Then where you define the value of the CSS properties, include JS that accepts `props` to complete the conditional statement inside `${}`
 
-- alternatively, you can scope your CSS files to certain components using **CSS Modules**. You need to update you webpack configs to include `module:true` and a localIndenName to css.test. Now in your JS, change your CSS file import statement to include a name (for example, `import classes from '.\App.css'`), replace all CSS file className calls with `{classes.{the class name}}`. If you want styles to only aply to certain componenets, include the component name in front of all the class names in the CSS file and JS component. Watch out that the never React versions have a different syntax to work with
+- alternatively, you can scope your CSS files to certain components using **CSS Modules**, which is a way to work with webpack to make sure that repeated class names don't clash. 
+    - If you're starting a new project (without typescript) the new version of react handles the addition of css-modules. If you are using typescript, you need to use the plugin `typescript-plugin-csss-modules`. If you're changing a preexisting file, you need to eject, update your webpack configs to include `module:true` and a localIndenName to css.test. 
+    - Now in your JS, change your CSS file import statement to include a name (for example, `import classes from '.\App.css'`, instead of just `import '.\App.css`), replace all CSS file className calls with `{classes.{the class name}}` (a dynamic call). 
+    - If you want styles to only aply to certain componenets, include the component name in front of all the class names in the CSS file and JS component. Watch out that the newer React versions have a different syntax to work with
 
 
 ## Using Conditional Content and Lists
@@ -422,7 +425,7 @@
 - = components that only wrap other components, and don't contain logic or purpose of its own
     - []<div> that we used to wrap the content of our return methods, or the foo/React.Fragment components from ^
     - it's convention to use `With[name]` for the name of these components, and place within a folder called "hoc".
-- you can either create a component two wrap all of your JSX in...
+- you can either create a component to wrap all of your JSX in...
     ```javascript
     //WithClass.js
     import React from 'react';
