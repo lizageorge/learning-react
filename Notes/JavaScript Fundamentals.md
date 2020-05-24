@@ -347,20 +347,72 @@ or the method JSON.parse()
 ## Array Iteration
 - You can use a for loop, but there are other methods
 - Here, accepts a function as a parameter. These functions are defined as arrow functions! The first argument is the iterator value (i)
-forEach
+### forEach
 - Like a for loop going through the array
+```
+let carIds = [
+    { carId: 123, styel: "sedan"},
+    { carId: 456, styel: "suv"},
+    { carId: 789, styel: "convertabile"}
+];
+
+carIds.forEach ( car => console.log(car));
+
+carIds.forEach ((car, index) => console.log(car, index));
+
+```
 
 ### filter 
-- Will go through every item in the array (for loop) and check a conditional against every object’s specified key-value, and store those objects into a new array (parameter)
-every 
+- Will go through every item in the array (for loop) and check a conditional (the boolean-return type arrow function in the parameter) against every object (the param of the arrow function), and return a new array with those objects that returned true to the arrow function.
+
+```
+let carIds = [
+    { carId: 123, styel: "sedan"},
+    { carId: 456, styel: "suv"},
+    { carId: 789, styel: "convertabile"}
+];
+
+let convertibles = carIds.filter( car => car.style === "convertible");
+```
+
+### every 
 - Will go through every item in the array (for loop) and check if every object’s specified key-value exists, and return true. If even one object has a falsey in that value, this function will return false. 
+```
+let carIds = [
+    { carId: 123, styel: "sedan"},
+    { carId: 456, styel: "suv"},
+    { carId: 789, styel: "convertabile"}
+];
+
+let result = carIds.every( car => car.carID > 0);
+```
 
 ### Find
 - Will go through every item in the array (for loop) and check a conditional against every object’s specified key-value. The *first object* that returns true will be stored in a variable (parameter) and the loop will break. Similarily, findINdex will find the index of the specified element
 
-### Map
+```
+let carIds = [
+    { carId: 123, styel: "sedan"},
+    { carId: 456, styel: "suv"},
+    { carId: 789, styel: "convertabile"}
+];
 
-More on mozilla development network
+let myCar = carIds.find( car => car.carID > 500);
+```
+
+### Map
+- Will go through every item in the array, and accepts an arrow function (with a single aray elem as the param) and run that function for each item
+```
+let carIds = [
+    { carId: 123, styel: "sedan"},
+    { carId: 456, styel: "suv"},
+    { carId: 789, styel: "convertabile"}
+];
+
+carIds.map(car => console.log("This is a " + car.style + " !"));
+```
+
+- (More on mozilla development network)
 
 ## Classes and Modules
 - **Classes** 
