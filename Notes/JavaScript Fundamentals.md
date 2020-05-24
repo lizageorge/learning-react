@@ -310,53 +310,55 @@ The default parameters must be listed at the right of the function parameter lis
 ES6 feature
 
 ## Objects and Arrays
-Constructor Function 
-Used to make new objects. When calling this function, you always need the new keyword (function:class) (var:object)
-The function name usually has a capital first letter
-The function can enter parameters
-If you use the this keyword in the code, then when you create a new object using the Constructor function and it makes a new context, which is empty until you use the function properties/methods that are defined with ‘this’. So properties and methods are stored on the this keyword. IE the ‘this’ keyword is acting almost like a placeholder while making the function that will later be replaced with the variable name.
+### Constructor Function 
+- Used to make new objects. When calling this function, you always need the new keyword (function:class) (var:object)
+- The function name usually has a capital first letter
+- The function can enter parameters
+- If you use the this keyword in the code, then when you create a new object using the Constructor function and it makes a new context, which is empty until you use the function properties/methods that are defined with ‘this’. So properties and methods are stored on the this keyword. IE the ‘this’ keyword is acting almost like a placeholder while making the function that will later be replaced with the variable name.
 
-You can also call methods for functions defined in the constructor function
+- You can also call methods for functions defined in the constructor function
 	
-Prototypes
-If you leave the above constructor function as is, then every time you create a new object you’re creating a brand new yet identical function, which takes up memory
-Still part of the function scope; you can use variables defined in the function
+## Prototypes
+- If you leave the above constructor function as is, then every time you create a new object you’re creating a brand new yet identical function, which takes up memory
+- Still part of the function scope; you can use variables defined in the function
 Instead we make the method function outside the function, on the system-built prototype property of your ‘class’. You still need to work with the function’s context, or ‘this’.
 
-Expanding Objects Using Prototypes
-You can create new methods using prototypes on system-defined objects(like String) too
+### Expanding Objects Using Prototypes
+- You can create new methods using prototypes on system-defined objects(like String) too
 (btw, toString just takes the name of the object and puts it in string format). Here you’re taking the predefined String object, and adding a method called hello. Once you use it on the object foo, it’ll return (‘foo’ + ‘ hello’)
-There’s a shortcut; when the key-value pair has the same name for the key and value, you can just leave the code like this
+- There’s a shortcut; when the key-value pair has the same name for the key and value, you can just leave the code like this
 is equivalent to InverseOfPI: InverseOfPI
-Dynamic properties: it’s like the name of the key of the key value pair is held in a variable.
+- Dynamic properties: it’s like the name of the key of the key value pair is held in a variable.
 
+```
 console.log(obj.mystery) → undefined
 console .log(obj.answer) → 42
+```
 
 
 
-JSON- JavaScript Object Notation
-Can send objects over APIs in a specified text format. (JSON is another global method)
-Use the methods JSON.stringify() 
+### JSON- JavaScript Object Notation
+- Can send objects over APIs in a specified text format. (JSON is another global method)
+- Use the methods JSON.stringify() 
 notice how even the key names are in quotes
 or the method JSON.parse() 
  → would print the array JS-style, in square brackets
 
-Array Iteration
-You can use a for loop, but there are other methods
-Here, accepts a function as a parameter. These functions are defined as arrow functions! The first argument is the iterator value (i)
+## Array Iteration
+- You can use a for loop, but there are other methods
+- Here, accepts a function as a parameter. These functions are defined as arrow functions! The first argument is the iterator value (i)
 forEach
-Like a for loop going through the array
+- Like a for loop going through the array
 
-filter 
-Will go through every item in the array (for loop) and check a conditional against every object’s specified key-value, and store those objects into a new array (parameter)
+### filter 
+- Will go through every item in the array (for loop) and check a conditional against every object’s specified key-value, and store those objects into a new array (parameter)
 every 
-Will go through every item in the array (for loop) and check if every object’s specified key-value exists, and return true. If even one object has a falsey in that value, this function will return false. 
+- Will go through every item in the array (for loop) and check if every object’s specified key-value exists, and return true. If even one object has a falsey in that value, this function will return false. 
 
-Find
-Will go through every item in the array (for loop) and check a conditional against every object’s specified key-value. The *first object* that returns true will be stored in a variable (parameter) and the loop will break. Similarily, findINdex will find the index of the specified element
+### Find
+- Will go through every item in the array (for loop) and check a conditional against every object’s specified key-value. The *first object* that returns true will be stored in a variable (parameter) and the loop will break. Similarily, findINdex will find the index of the specified element
 
-Map
+### Map
 
 More on mozilla development network
 
